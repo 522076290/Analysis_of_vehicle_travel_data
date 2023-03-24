@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('datapreProcessing/', views.datapreprocessingapi),
     path('drawMap/', views.drawmapapi),
+    path('trafficStatistics/', views.trafficStatistics),
 ]

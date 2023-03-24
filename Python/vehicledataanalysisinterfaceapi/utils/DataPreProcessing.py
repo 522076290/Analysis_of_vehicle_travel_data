@@ -189,24 +189,149 @@ def zeroVelocityProcessing(drivingdata):
     return data2
 
 
-# def zeroVelocityProcessing(drivingdata):
-#     # 删除无用特征列
-#     df = drivingdata.drop(['right_turn_signals', 'left_turn_signals', 'hand_brake', 'foot_brake'], axis=1)
-#
-#     # 取出速度为 0 的行
-#     zero_speed_df = df[df['gps_speed'] == 0]
-#
-#     # 获取连续区间的开始和结束索引值
-#     idx_list = []
-#     start_idx = None
-#     end_idx = None
-#     for i, row in zero_speed_df.iterrows():
-#         if start_idx is None:
-#             start_idx = i
-#         elif i != end_idx + 1:
-#             idx_list.append((start_idx, end_idx, end_idx - start_idx + 1))
-#             start_idx = i
-#         end_idx = i
-#     if start_idx is not None:
-#         idx_list.append((start_idx, end_idx, end_idx - start_idx + 1))
+def zeroVelocityProcessing2(drivingdata):
+    """
+    零速度填充
+    :param drivingdata: 传入车辆行驶数据
+    :return:
+    """
+    # 删除无用特征列
+    df = drivingdata.drop(['right_turn_signals', 'left_turn_signals', 'hand_brake', 'foot_brake'], axis=1)
 
+    # 零速度修正
+    return correct_zero_speed(df)
+
+
+def distance(lat1, lon1, lat2, lon2):
+    """
+    定义一个函数来计算两点之间的距离（单位为米）
+    :param lat1:
+    :param lon1:
+    :param lat2:
+    :param lon2:
+    :return:
+    """
+    # 将角度转换为弧度
+    lat1 = np.radians(lat1)
+    lon1 = np.radians(lon1)
+    lat2 = np.radians(lat2)
+    lon2 = np.radians(lon2)
+
+    # 计算两点之间的球面距离（假设地球半径为6371000米）
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = np.sin(dlat / 2) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2) ** 2
+    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+    distance = c * 6371000
+
+    return distance
+
+
+def angle_diff(angle1, angle2):
+    """
+    定义一个函数来计算两点之间的方向角差（单位为角度）
+    :param angle1:  第一个角度
+    :param angle2:  第二个角度
+    :return:
+    """
+    # 计算两点之间的方向角差（范围在-180到180之间）
+    diff = (angle1 - angle2) % 360
+    if diff > 180:
+        diff -= 360
+
+    return diff
+
+
+def is_low_speed(speed):
+    """
+    定义一个函数来判断是否为低速行驶状态（小于等于10km/h）
+    :param speed:  速度
+    :return:
+    """
+    # 如果速度小于等于10km/h，则返回True，否则返回False
+    if speed <= 10:
+        return True
+
+    else:
+        return False
+
+
+def is_stop(speed):
+    """
+    定义一个函数来判断是否为停车状态（即零速度）
+    :param speed: 速度
+    :return:
+    """
+    # 如果速度等于0，则返回True，否则返回False
+    if speed == 0:
+        return True
+
+    else:
+        return False
+
+
+def is_start_or_stop(speed_before, speed_after):
+    """
+    定义一个函数来判断是否为起步或制动状态（即从低速到高速或从高速到低速）
+    :param speed_before: 之前速度
+    :param speed_after:  之后速度
+    :return:
+    """
+    # 如果前后两个速度都不为零，并且其中一个为低速而另一个不为低速，则返回True，否则返回False
+    if speed_before != 0 and speed_after != 0 and is_low_speed(speed_before) != is_low_speed(speed_after):
+        return True
+
+    else:
+        return False
+
+
+
+def correct_zero_speed(df):
+    """
+    定义一个函数来对零速度进行修正处理（即将其替换为合理的速度值）
+    :param df: 车辆行驶数据
+    :return:
+    """
+    # 找出所有零速度的索引
+    zero_index = df[df['gps_speed'] == 0].index
+    # 遍历每个零速度的索引
+    for i in zero_index:
+        # 如果不是第一行或最后一行
+        if i > 0 and i < len(df) - 1:
+            # 取前后两个速度值
+            speed_before = df['gps_speed'][i - 1]
+            speed_after = df['gps_speed'][i + 1]
+            # 取前后两个方向角值
+            angle_before = df['direction_angle'][i - 1]
+            angle_after = df['direction_angle'][i + 1]
+            # 取前后两个经纬度值
+            lat_before = df['lat'][i - 1]
+            lon_before = df['lng'][i - 1]
+            lat_after = df['lat'][i + 1]
+            lon_after = df['lng'][i + 1]
+
+            # 计算前后两点之间的距离和方向角差
+            dist = distance(lat_before, lon_before, lat_after, lon_after)
+            diff_angle = angle_diff(angle_before, angle_after)
+
+            # 如果前后两点之间的距离小于等于10米，并且方向角差小于等于10度，则认为车辆处于停车状态，不做处理
+            if dist <= 10 and abs(diff_angle) <= 10:
+                pass
+
+            # 否则，如果前后两点之间的距离大于10米，并且方向角差大于10度，则认为车辆处于转弯状态，用前一个非零速度作为填充值
+            elif dist > 10 and abs(diff_angle) > 10:
+                fill_value = speed_before
+                df['gps_speed'][i] = fill_value
+
+                # 否则，如果前后两个速度都不为零，并且其中一个为低速而另一个不为低速，则认为车辆处于起步或制动状态，用前后两个非零速度的平均值作为填充值
+            elif is_start_or_stop(speed_before, speed_after):
+                fill_value = (speed_before + speed_after) / 2
+                df['gps_speed'][i] = fill_value
+
+                # 否则，用线性插值法计算填充值（即假设车辆在零速度位置处以恒定加速度运动）
+            else:
+                fill_value = speed_before + (speed_after - speed_before) / 2
+                df['gps_speed'][i] = fill_value
+                # 将填充值赋给零速度位置
+
+    return df

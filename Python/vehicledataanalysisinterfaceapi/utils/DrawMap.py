@@ -1,3 +1,4 @@
+# coding:utf-8
 import folium
 from django.apps import apps
 import pandas as pd
