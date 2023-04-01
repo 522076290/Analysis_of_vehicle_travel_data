@@ -9,7 +9,8 @@ from django.apps import apps
 from vehicledataanalysisinterfaceapi.utils.DataPreProcessing import zeroVelocityProcessing2
 from vehicledataanalysisinterfaceapi.utils.DrawMap import drawMap, baseDBSCANMapNoiseReduction, kalman_filter
 from vehicledataanalysisinterfaceapi.utils.DrivingBehaviorScore import DrivingBehaviorScore, Static_Behavior
-from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreProcessingcallback
+from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreProcessingcallback, \
+    datastatisticscallback
 
 # Create your views here.
 
@@ -75,13 +76,23 @@ def trafficStatistics(request):
     df = pd.read_csv(filepath)
 
     # 在新线程中执行耗时操作 处理数据
-    def process_data():
-        Static_Behavior(df)
-        res["preprocessingState"] = 2
-        datapreProcessingcallback(res)
+    def statistics_data():
+        drive_behavior_statics = Static_Behavior(df)
+        # 给对应的字段进行数据填充
+        fields = ['speedStd', 'rapidAccNumbers', 'rapidAccDuration', 'rapidDecNumbers', 'rapidDecDuration',
+                  'slideFrameoutDuration', 'slideFrameoutNumbers', 'overspeedNumbers', 'overspeedDuration',
+                  'fatiguedrivingNumbers', 'fatiguedrivingHours', 'suddenturnNumbers', 'idlePreheatingNumbers',
+                  'idlePreheatingMins', 'overlongIdleNumbers', 'overlongIdleMins']
+        count = 0
+        for field in fields:
+            res[field] = drive_behavior_statics[count]
+            count += 1
+        # 修改统计状态
+        res["statisticalState"] = 2
+        datastatisticscallback(res)
 
     # 创建并启动新线程
-    thread = threading.Thread(target=process_data)
+    thread = threading.Thread(target=statistics_data)
     thread.start()
 
     request_data = {"code": 200, "message": "请求成功", }

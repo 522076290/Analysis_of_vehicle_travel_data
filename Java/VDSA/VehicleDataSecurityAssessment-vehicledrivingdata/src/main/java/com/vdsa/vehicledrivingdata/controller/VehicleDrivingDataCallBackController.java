@@ -35,13 +35,24 @@ public class VehicleDrivingDataCallBackController extends BaseController
     private IVehicleDrivingDataService vehicleDrivingDataService;
 
     /**
-     * 车辆驾驶行为数据预处理
+     * 车辆驾驶行为数据预处理回调接口
      */
     @Log(title = "车辆驾驶行为数据预处理", businessType = BusinessType.UPDATE)
     @PutMapping("/preprocessing-callback")
     public AjaxResult preprocessing(@RequestBody VehicleDrivingData vehicleDrivingData)
     {
         vehicleDrivingData.getPreprocessingState();
+        return toAjax(vehicleDrivingDataService.updateVehicleDrivingData(vehicleDrivingData));
+    }
+
+    /**
+     * 危险驾驶行为回调接口
+     */
+    @Log(title = "车辆驾驶行为数据预处理", businessType = BusinessType.UPDATE)
+    @PutMapping("/statistics-callback")
+    public AjaxResult statistics(@RequestBody VehicleDrivingData vehicleDrivingData)
+    {
+        vehicleDrivingData.getStatisticalState();
         return toAjax(vehicleDrivingDataService.updateVehicleDrivingData(vehicleDrivingData));
     }
 }

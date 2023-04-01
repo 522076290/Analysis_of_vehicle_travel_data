@@ -347,7 +347,7 @@ def Static_Behavior(df):
     :param df: 导入的驾驶数据
     :return:speed_std 车速方差, rapid_acc_numbers 急加速次数, rapid_acc_duration 急加速时长, rapid_dec_numbers 急减速次数, rapid_dec_duration 急减速时长,
             slide_frameOut_duration 熄火滑行时长, slide_frameOut_numbers 熄火滑行次数, overspeed_numbers 超速次数, overspeed_duration 超速时长,
-            fatigueDriving_numbers 疲劳驾驶次数, fatigueDriving_hours 疲劳驾驶时长, suddenTurn_numbers 急转弯次数, idle_preheating_numbers 怠速预热输出列表,
+            fatigueDriving_numbers 疲劳驾驶次数, fatigueDriving_hours 疲劳驾驶时长, suddenTurn_numbers 急转弯次数, idle_preheating_numbers 怠速预热次数,
             idle_preheating_mins 怠速预热时长, overlong_idle_numbers 超长怠速次数, overlong_idle_mins 超长怠速时长
     """
     weather_dict = genLocation_Date_Weather_Dict() # 获取天气字典
@@ -373,6 +373,7 @@ def Static_Behavior(df):
     overlong_idle_list = idling(df)  # 超长怠速输出列表
     overlong_idle_numbers = overlong_idle_list[0]  # 超长怠速次数
     overlong_idle_mins = overlong_idle_list[1]  # 超长怠速时长
+
     return [speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration,
             slide_frameOut_duration, slide_frameOut_numbers, overspeed_numbers, overspeed_duration,
             fatigueDriving_numbers, fatigueDriving_hours, suddenTurn_numbers, idle_preheating_numbers,

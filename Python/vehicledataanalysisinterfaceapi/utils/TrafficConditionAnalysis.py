@@ -175,7 +175,7 @@ def idling(df):
                     idlingCount += 1
                 isIdling = False
 
-    return [timeSum, idlingCount]
+    return [idlingCount, timeSum]
 
 
 # 求出一段路的急加速急减速次数和对应的时间
