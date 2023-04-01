@@ -6,7 +6,7 @@ import com.vdsa.system.domain.SysPost;
 /**
  * 岗位信息 服务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ISysPostService
 {

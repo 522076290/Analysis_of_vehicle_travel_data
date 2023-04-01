@@ -6,7 +6,7 @@ import com.vdsa.system.domain.SysOperLog;
 /**
  * 操作日志 服务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ISysOperLogService
 {

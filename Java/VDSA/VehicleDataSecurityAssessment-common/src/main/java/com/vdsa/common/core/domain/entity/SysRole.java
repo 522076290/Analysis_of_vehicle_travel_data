@@ -13,7 +13,7 @@ import com.vdsa.common.core.domain.BaseEntity;
 /**
  * 角色表 sys_role
  * 
- * @author ruoyi
+ * @author lan
  */
 public class SysRole extends BaseEntity
 {

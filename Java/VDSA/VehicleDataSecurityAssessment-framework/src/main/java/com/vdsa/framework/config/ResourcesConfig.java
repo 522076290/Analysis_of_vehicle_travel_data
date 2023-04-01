@@ -18,7 +18,7 @@ import com.vdsa.framework.interceptor.RepeatSubmitInterceptor;
 /**
  * 通用配置
  * 
- * @author ruoyi
+ * @author lan
  */
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer

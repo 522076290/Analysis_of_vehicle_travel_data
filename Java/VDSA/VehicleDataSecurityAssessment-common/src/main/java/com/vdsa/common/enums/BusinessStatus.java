@@ -3,7 +3,7 @@ package com.vdsa.common.enums;
 /**
  * 操作状态
  * 
- * @author ruoyi
+ * @author lan
  *
  */
 public enum BusinessStatus

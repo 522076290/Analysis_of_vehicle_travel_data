@@ -10,7 +10,7 @@ import com.vdsa.system.service.ISysNoticeService;
 /**
  * 公告 服务层实现
  * 
- * @author ruoyi
+ * @author lan
  */
 @Service
 public class SysNoticeServiceImpl implements ISysNoticeService

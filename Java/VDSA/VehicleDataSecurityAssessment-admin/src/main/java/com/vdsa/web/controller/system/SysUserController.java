@@ -35,7 +35,7 @@ import com.vdsa.system.service.ISysUserService;
 /**
  * 用户信息
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/system/user")

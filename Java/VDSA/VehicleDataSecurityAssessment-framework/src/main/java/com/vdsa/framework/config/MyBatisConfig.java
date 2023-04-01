@@ -27,7 +27,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * Mybatis支持*匹配扫描包
  * 
- * @author ruoyi
+ * @author lan
  */
 @Configuration
 public class MyBatisConfig

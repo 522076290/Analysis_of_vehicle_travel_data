@@ -6,7 +6,7 @@ import com.vdsa.common.core.domain.entity.SysUser;
 /**
  * 用户 业务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ISysUserService
 {

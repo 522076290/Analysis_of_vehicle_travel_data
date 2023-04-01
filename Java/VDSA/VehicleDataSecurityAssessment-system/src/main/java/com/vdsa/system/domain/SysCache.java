@@ -5,7 +5,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * 缓存信息
  * 
- * @author ruoyi
+ * @author lan
  */
 public class SysCache
 {

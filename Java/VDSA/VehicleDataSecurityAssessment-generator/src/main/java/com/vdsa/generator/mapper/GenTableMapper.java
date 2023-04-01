@@ -6,7 +6,7 @@ import com.vdsa.generator.domain.GenTable;
 /**
  * 业务 数据层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface GenTableMapper
 {

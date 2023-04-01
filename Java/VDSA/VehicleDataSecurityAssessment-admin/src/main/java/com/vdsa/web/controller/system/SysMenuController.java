@@ -24,7 +24,7 @@ import com.vdsa.system.service.ISysMenuService;
 /**
  * 菜单信息
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/system/menu")

@@ -40,7 +40,7 @@ import com.vdsa.generator.util.VelocityUtils;
 /**
  * 业务 服务层实现
  * 
- * @author ruoyi
+ * @author lan
  */
 @Service
 public class GenTableServiceImpl implements IGenTableService

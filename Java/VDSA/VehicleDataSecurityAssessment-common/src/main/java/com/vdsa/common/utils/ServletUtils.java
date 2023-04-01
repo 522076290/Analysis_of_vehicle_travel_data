@@ -20,7 +20,7 @@ import com.vdsa.common.core.text.Convert;
 /**
  * 客户端工具类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class ServletUtils
 {

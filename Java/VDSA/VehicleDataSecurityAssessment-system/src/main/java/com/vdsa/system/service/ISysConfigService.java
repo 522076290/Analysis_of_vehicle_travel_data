@@ -6,7 +6,7 @@ import com.vdsa.system.domain.SysConfig;
 /**
  * 参数配置 服务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ISysConfigService
 {

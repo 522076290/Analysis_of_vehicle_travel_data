@@ -3,7 +3,7 @@ package com.vdsa.common.enums;
 /**
  * 业务操作类型
  * 
- * @author ruoyi
+ * @author lan
  */
 public enum BusinessType
 {

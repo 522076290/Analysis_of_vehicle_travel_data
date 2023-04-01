@@ -3,7 +3,7 @@ package com.vdsa.common.utils.uuid;
 /**
  * ID生成器工具类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class IdUtils
 {

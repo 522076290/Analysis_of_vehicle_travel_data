@@ -5,7 +5,7 @@ import com.vdsa.common.exception.base.BaseException;
 /**
  * 文件信息异常类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class FileException extends BaseException
 {

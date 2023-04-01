@@ -13,7 +13,7 @@ import com.vdsa.common.core.domain.BaseEntity;
 /**
  * 部门表 sys_dept
  * 
- * @author ruoyi
+ * @author lan
  */
 public class SysDept extends BaseEntity
 {

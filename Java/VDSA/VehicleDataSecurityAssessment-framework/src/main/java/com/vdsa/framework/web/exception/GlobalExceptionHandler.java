@@ -18,7 +18,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * 全局异常处理器
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler

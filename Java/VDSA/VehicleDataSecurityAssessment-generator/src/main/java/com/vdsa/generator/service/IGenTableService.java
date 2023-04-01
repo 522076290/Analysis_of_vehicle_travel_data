@@ -7,7 +7,7 @@ import com.vdsa.generator.domain.GenTable;
 /**
  * 业务 服务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface IGenTableService
 {

@@ -6,7 +6,7 @@ import com.vdsa.system.domain.SysNotice;
 /**
  * 通知公告表 数据层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface SysNoticeMapper
 {

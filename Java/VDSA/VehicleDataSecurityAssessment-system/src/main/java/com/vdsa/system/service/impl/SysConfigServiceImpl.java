@@ -20,7 +20,7 @@ import com.vdsa.system.service.ISysConfigService;
 /**
  * 参数配置 服务层实现
  * 
- * @author ruoyi
+ * @author lan
  */
 @Service
 public class SysConfigServiceImpl implements ISysConfigService

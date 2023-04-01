@@ -3,7 +3,7 @@ package com.vdsa.common.utils.poi;
 /**
  * Excel数据格式处理适配器
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ExcelHandlerAdapter
 {

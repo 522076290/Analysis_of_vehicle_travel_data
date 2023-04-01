@@ -22,7 +22,7 @@ import com.vdsa.quartz.service.ISysJobLogService;
 /**
  * 调度日志操作处理
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/monitor/jobLog")

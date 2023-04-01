@@ -5,7 +5,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * 分页数据
  * 
- * @author ruoyi
+ * @author lan
  */
 public class PageDomain
 {

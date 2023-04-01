@@ -13,7 +13,7 @@ import com.vdsa.system.service.ISysRoleService;
 /**
  * 用户权限处理
  * 
- * @author ruoyi
+ * @author lan
  */
 @Component
 public class SysPermissionService

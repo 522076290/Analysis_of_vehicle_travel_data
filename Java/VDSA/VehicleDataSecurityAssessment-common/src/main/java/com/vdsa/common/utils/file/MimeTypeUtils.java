@@ -3,7 +3,7 @@ package com.vdsa.common.utils.file;
 /**
  * 媒体类型工具类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class MimeTypeUtils
 {
@@ -29,8 +29,8 @@ public class MimeTypeUtils
     public static final String[] DEFAULT_ALLOWED_EXTENSION = {
             // 图片
             "bmp", "gif", "jpg", "jpeg", "png",
-            // word excel powerpoint
-            "doc", "docx", "xls", "xlsx", "ppt", "pptx", "html", "htm", "txt",
+            // word excel powerpoint csv
+            "doc", "docx", "xls", "xlsx", "ppt", "pptx", "html", "htm", "txt", "csv",
             // 压缩文件
             "rar", "zip", "gz", "bz2",
             // 视频格式

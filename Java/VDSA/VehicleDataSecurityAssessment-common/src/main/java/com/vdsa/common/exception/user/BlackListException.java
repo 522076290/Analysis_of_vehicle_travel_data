@@ -3,7 +3,7 @@ package com.vdsa.common.exception.user;
 /**
  * 黑名单IP异常类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class BlackListException extends UserException
 {

@@ -26,7 +26,7 @@ module.exports = {
   // 是否开启eslint保存检测，有效值：ture | false | 'error'
   lintOnSave: process.env.NODE_ENV === 'development',
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
-  productionSourceMap: false,
+  productionSourceMap: true,
   // webpack-dev-server 相关配置
   devServer: {
     host: '0.0.0.0',

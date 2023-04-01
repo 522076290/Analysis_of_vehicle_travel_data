@@ -6,7 +6,7 @@ import com.vdsa.common.constant.HttpStatus;
 /**
  * 响应信息主体
  *
- * @author ruoyi
+ * @author lan
  */
 public class R<T> implements Serializable
 {

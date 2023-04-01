@@ -3,7 +3,7 @@ package com.vdsa.common.constant;
 /**
  * 用户常量信息
  * 
- * @author ruoyi
+ * @author lan
  */
 public class UserConstants
 {

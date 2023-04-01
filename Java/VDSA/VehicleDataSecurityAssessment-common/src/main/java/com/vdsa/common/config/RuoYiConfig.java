@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * 读取项目相关配置
  * 
- * @author ruoyi
+ * @author lan
  */
 @Component
 @ConfigurationProperties(prefix = "ruoyi")
@@ -32,6 +32,9 @@ public class RuoYiConfig
 
     /** 验证码类型 */
     private static String captchaType;
+
+    /** Python接口地址 */
+    private static String pythonApiPath;
 
     public String getName()
     {
@@ -99,6 +102,14 @@ public class RuoYiConfig
 
     public void setCaptchaType(String captchaType) {
         RuoYiConfig.captchaType = captchaType;
+    }
+
+    public static String getPythonApiPath() {
+        return pythonApiPath;
+    }
+
+    public void setPythonApiPath(String pythonApiPath) {
+        RuoYiConfig.pythonApiPath = pythonApiPath;
     }
 
     /**

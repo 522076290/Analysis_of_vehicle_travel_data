@@ -25,7 +25,7 @@ import com.vdsa.system.service.ISysDeptService;
 /**
  * 部门信息
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/system/dept")

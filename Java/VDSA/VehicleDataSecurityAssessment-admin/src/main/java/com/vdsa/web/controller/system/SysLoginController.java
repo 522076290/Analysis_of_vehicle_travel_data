@@ -20,7 +20,7 @@ import com.vdsa.system.service.ISysMenuService;
 /**
  * 登录验证
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 public class SysLoginController

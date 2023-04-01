@@ -17,7 +17,7 @@ import com.vdsa.system.service.ISysUserService;
 /**
  * 用户验证处理
  *
- * @author ruoyi
+ * @author lan
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService

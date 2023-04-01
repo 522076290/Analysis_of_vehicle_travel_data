@@ -3,7 +3,7 @@ package com.vdsa.common.exception;
 /**
  * 业务异常
  * 
- * @author ruoyi
+ * @author lan
  */
 public final class ServiceException extends RuntimeException
 {

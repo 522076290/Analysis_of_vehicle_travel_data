@@ -3,7 +3,7 @@ package com.vdsa.framework.web.domain.server;
 /**
  * 系统文件相关信息
  * 
- * @author ruoyi
+ * @author lan
  */
 public class SysFile
 {

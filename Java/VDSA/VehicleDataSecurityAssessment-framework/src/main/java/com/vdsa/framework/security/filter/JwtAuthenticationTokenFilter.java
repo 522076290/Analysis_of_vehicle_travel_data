@@ -19,7 +19,7 @@ import com.vdsa.framework.web.service.TokenService;
 /**
  * token过滤器 验证token有效性
  * 
- * @author ruoyi
+ * @author lan
  */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter

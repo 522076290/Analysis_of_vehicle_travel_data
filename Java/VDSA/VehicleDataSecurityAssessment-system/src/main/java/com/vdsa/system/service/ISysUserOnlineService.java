@@ -6,7 +6,7 @@ import com.vdsa.system.domain.SysUserOnline;
 /**
  * 在线用户 服务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ISysUserOnlineService
 {

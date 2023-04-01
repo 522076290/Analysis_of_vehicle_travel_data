@@ -3,7 +3,7 @@ package com.vdsa.common.enums;
 /**
  * 限流类型
  *
- * @author ruoyi
+ * @author lan
  */
 
 public enum LimitType

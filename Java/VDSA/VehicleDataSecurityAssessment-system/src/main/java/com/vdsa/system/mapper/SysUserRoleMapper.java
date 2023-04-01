@@ -7,7 +7,7 @@ import com.vdsa.system.domain.SysUserRole;
 /**
  * 用户与角色关联表 数据层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface SysUserRoleMapper
 {

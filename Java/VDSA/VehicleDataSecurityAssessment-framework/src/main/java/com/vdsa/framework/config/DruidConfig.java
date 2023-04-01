@@ -27,7 +27,7 @@ import com.vdsa.framework.datasource.DynamicDataSource;
 /**
  * druid 配置多数据源
  * 
- * @author ruoyi
+ * @author lan
  */
 @Configuration
 public class DruidConfig

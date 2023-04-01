@@ -23,7 +23,7 @@ import com.vdsa.system.service.ISysLogininforService;
 /**
  * 系统访问记录
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/monitor/logininfor")

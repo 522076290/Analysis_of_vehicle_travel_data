@@ -14,7 +14,7 @@ import com.vdsa.system.service.ISysConfigService;
 /**
  * 注册验证
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 public class SysRegisterController extends BaseController

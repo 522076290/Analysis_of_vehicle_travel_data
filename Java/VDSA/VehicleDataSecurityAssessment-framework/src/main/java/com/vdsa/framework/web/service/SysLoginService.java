@@ -32,7 +32,7 @@ import com.vdsa.system.service.ISysUserService;
 /**
  * 登录校验方法
  * 
- * @author ruoyi
+ * @author lan
  */
 @Component
 public class SysLoginService

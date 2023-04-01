@@ -3,7 +3,7 @@ package com.vdsa.common.constant;
 /**
  * 任务调度通用常量
  * 
- * @author ruoyi
+ * @author lan
  */
 public class ScheduleConstants
 {

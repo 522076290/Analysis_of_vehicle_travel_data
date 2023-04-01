@@ -22,7 +22,7 @@ import com.vdsa.system.service.ISysOperLogService;
 /**
  * 操作日志记录
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/monitor/operlog")

@@ -7,7 +7,7 @@ import com.vdsa.common.constant.Constants;
 /**
  * VelocityEngine工厂
  * 
- * @author ruoyi
+ * @author lan
  */
 public class VelocityInitializer
 {

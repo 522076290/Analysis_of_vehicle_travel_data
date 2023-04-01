@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vdsa.vehicledrivingdata.mapper.VehicleDrivingDataMapper">
+
+    <resultMap type="VehicleDrivingData" id="VehicleDrivingDataResult">
+        <result property="vehicleDataId"    column="vehicle_data_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="dataPath"    column="data_path"    />
+        <result property="speedStd"    column="speed_std"    />
+        <result property="rapidAccNumbers"    column="rapid_acc_numbers"    />
+        <result property="rapidAccDuration"    column="rapid_acc_duration"    />
+        <result property="rapidDecNumbers"    column="rapid_dec_numbers"    />
+        <result property="rapidDecDuration"    column="rapid_dec_duration"    />
+        <result property="slideFrameoutNumbers"    column="slide_frameout_numbers"    />
+        <result property="slideFrameoutDuration"    column="slide_frameout_duration"    />
+        <result property="overspeedNumbers"    column="overspeed_numbers"    />
+        <result property="overspeedDuration"    column="overspeed_duration"    />
+        <result property="fatiguedrivingNumbers"    column="fatigueDriving_numbers"    />
+        <result property="fatiguedrivingHours"    column="fatigueDriving_hours"    />
+        <result property="suddenturnNumbers"    column="suddenTurn_numbers"    />
+        <result property="idlePreheatingNumbers"    column="idle_preheating_numbers"    />
+        <result property="idlePreheatingMins"    column="idle_preheating_mins"    />
+        <result property="overlongIdleNumbers"    column="overlong_idle_numbers"    />
+        <result property="overlongIdleMins"    column="overlong_idle_mins"    />
+        <result property="preprocessingState"    column="preprocessing_state"    />
+        <result property="statisticalState"    column="statistical_state"    />
+    </resultMap>
+
+    <sql id="selectVehicleDrivingDataVo">
+        select vehicle_data_id, user_id, data_path, speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration, slide_frameout_numbers, slide_frameout_duration, overspeed_numbers, overspeed_duration, fatigueDriving_numbers, fatigueDriving_hours, suddenTurn_numbers, idle_preheating_numbers, idle_preheating_mins, overlong_idle_numbers, overlong_idle_mins, preprocessing_state, statistical_state from vehicle_driving_data
+    </sql>
+
+    <select id="selectVehicleDrivingDataList" parameterType="VehicleDrivingData" resultMap="VehicleDrivingDataResult">
+        <include refid="selectVehicleDrivingDataVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="dataPath != null  and dataPath != ''"> and data_path = #{dataPath}</if>
+            <if test="speedStd != null "> and speed_std = #{speedStd}</if>
+            <if test="rapidAccNumbers != null "> and rapid_acc_numbers = #{rapidAccNumbers}</if>
+            <if test="rapidAccDuration != null  and rapidAccDuration != ''"> and rapid_acc_duration = #{rapidAccDuration}</if>
+            <if test="rapidDecNumbers != null "> and rapid_dec_numbers = #{rapidDecNumbers}</if>
+            <if test="rapidDecDuration != null  and rapidDecDuration != ''"> and rapid_dec_duration = #{rapidDecDuration}</if>
+            <if test="slideFrameoutNumbers != null "> and slide_frameout_numbers = #{slideFrameoutNumbers}</if>
+            <if test="slideFrameoutDuration != null  and slideFrameoutDuration != ''"> and slide_frameout_duration = #{slideFrameoutDuration}</if>
+            <if test="overspeedNumbers != null "> and overspeed_numbers = #{overspeedNumbers}</if>
+            <if test="overspeedDuration != null  and overspeedDuration != ''"> and overspeed_duration = #{overspeedDuration}</if>
+            <if test="fatiguedrivingNumbers != null "> and fatigueDriving_numbers = #{fatiguedrivingNumbers}</if>
+            <if test="fatiguedrivingHours != null  and fatiguedrivingHours != ''"> and fatigueDriving_hours = #{fatiguedrivingHours}</if>
+            <if test="suddenturnNumbers != null "> and suddenTurn_numbers = #{suddenturnNumbers}</if>
+            <if test="idlePreheatingNumbers != null "> and idle_preheating_numbers = #{idlePreheatingNumbers}</if>
+            <if test="idlePreheatingMins != null  and idlePreheatingMins != ''"> and idle_preheating_mins = #{idlePreheatingMins}</if>
+            <if test="overlongIdleNumbers != null "> and overlong_idle_numbers = #{overlongIdleNumbers}</if>
+            <if test="overlongIdleMins != null  and overlongIdleMins != ''"> and overlong_idle_mins = #{overlongIdleMins}</if>
+            <if test="preprocessingState != null "> and preprocessing_state = #{preprocessingState}</if>
+            <if test="statisticalState != null "> and statistical_state = #{statisticalState}</if>
+        </where>
+    </select>
+
+    <select id="selectVehicleDrivingDataByVehicleDataId" parameterType="Long" resultMap="VehicleDrivingDataResult">
+        <include refid="selectVehicleDrivingDataVo"/>
+        where vehicle_data_id = #{vehicleDataId}
+    </select>
+
+    <insert id="insertVehicleDrivingData" parameterType="VehicleDrivingData" useGeneratedKeys="true" keyProperty="vehicleDataId">
+        insert into vehicle_driving_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="dataPath != null and dataPath != ''">data_path,</if>
+            <if test="speedStd != null">speed_std,</if>
+            <if test="rapidAccNumbers != null">rapid_acc_numbers,</if>
+            <if test="rapidAccDuration != null">rapid_acc_duration,</if>
+            <if test="rapidDecNumbers != null">rapid_dec_numbers,</if>
+            <if test="rapidDecDuration != null">rapid_dec_duration,</if>
+            <if test="slideFrameoutNumbers != null">slide_frameout_numbers,</if>
+            <if test="slideFrameoutDuration != null">slide_frameout_duration,</if>
+            <if test="overspeedNumbers != null">overspeed_numbers,</if>
+            <if test="overspeedDuration != null">overspeed_duration,</if>
+            <if test="fatiguedrivingNumbers != null">fatigueDriving_numbers,</if>
+            <if test="fatiguedrivingHours != null">fatigueDriving_hours,</if>
+            <if test="suddenturnNumbers != null">suddenTurn_numbers,</if>
+            <if test="idlePreheatingNumbers != null">idle_preheating_numbers,</if>
+            <if test="idlePreheatingMins != null">idle_preheating_mins,</if>
+            <if test="overlongIdleNumbers != null">overlong_idle_numbers,</if>
+            <if test="overlongIdleMins != null">overlong_idle_mins,</if>
+            <if test="preprocessingState != null">preprocessing_state,</if>
+            <if test="statisticalState != null">statistical_state,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="dataPath != null and dataPath != ''">#{dataPath},</if>
+            <if test="speedStd != null">#{speedStd},</if>
+            <if test="rapidAccNumbers != null">#{rapidAccNumbers},</if>
+            <if test="rapidAccDuration != null">#{rapidAccDuration},</if>
+            <if test="rapidDecNumbers != null">#{rapidDecNumbers},</if>
+            <if test="rapidDecDuration != null">#{rapidDecDuration},</if>
+            <if test="slideFrameoutNumbers != null">#{slideFrameoutNumbers},</if>
+            <if test="slideFrameoutDuration != null">#{slideFrameoutDuration},</if>
+            <if test="overspeedNumbers != null">#{overspeedNumbers},</if>
+            <if test="overspeedDuration != null">#{overspeedDuration},</if>
+            <if test="fatiguedrivingNumbers != null">#{fatiguedrivingNumbers},</if>
+            <if test="fatiguedrivingHours != null">#{fatiguedrivingHours},</if>
+            <if test="suddenturnNumbers != null">#{suddenturnNumbers},</if>
+            <if test="idlePreheatingNumbers != null">#{idlePreheatingNumbers},</if>
+            <if test="idlePreheatingMins != null">#{idlePreheatingMins},</if>
+            <if test="overlongIdleNumbers != null">#{overlongIdleNumbers},</if>
+            <if test="overlongIdleMins != null">#{overlongIdleMins},</if>
+            <if test="preprocessingState != null">#{preprocessingState},</if>
+            <if test="statisticalState != null">#{statisticalState},</if>
+        </trim>
+    </insert>
+
+    <update id="updateVehicleDrivingData" parameterType="VehicleDrivingData">
+        update vehicle_driving_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="dataPath != null and dataPath != ''">data_path = #{dataPath},</if>
+            <if test="speedStd != null">speed_std = #{speedStd},</if>
+            <if test="rapidAccNumbers != null">rapid_acc_numbers = #{rapidAccNumbers},</if>
+            <if test="rapidAccDuration != null">rapid_acc_duration = #{rapidAccDuration},</if>
+            <if test="rapidDecNumbers != null">rapid_dec_numbers = #{rapidDecNumbers},</if>
+            <if test="rapidDecDuration != null">rapid_dec_duration = #{rapidDecDuration},</if>
+            <if test="slideFrameoutNumbers != null">slide_frameout_numbers = #{slideFrameoutNumbers},</if>
+            <if test="slideFrameoutDuration != null">slide_frameout_duration = #{slideFrameoutDuration},</if>
+            <if test="overspeedNumbers != null">overspeed_numbers = #{overspeedNumbers},</if>
+            <if test="overspeedDuration != null">overspeed_duration = #{overspeedDuration},</if>
+            <if test="fatiguedrivingNumbers != null">fatigueDriving_numbers = #{fatiguedrivingNumbers},</if>
+            <if test="fatiguedrivingHours != null">fatigueDriving_hours = #{fatiguedrivingHours},</if>
+            <if test="suddenturnNumbers != null">suddenTurn_numbers = #{suddenturnNumbers},</if>
+            <if test="idlePreheatingNumbers != null">idle_preheating_numbers = #{idlePreheatingNumbers},</if>
+            <if test="idlePreheatingMins != null">idle_preheating_mins = #{idlePreheatingMins},</if>
+            <if test="overlongIdleNumbers != null">overlong_idle_numbers = #{overlongIdleNumbers},</if>
+            <if test="overlongIdleMins != null">overlong_idle_mins = #{overlongIdleMins},</if>
+            <if test="preprocessingState != null">preprocessing_state = #{preprocessingState},</if>
+            <if test="statisticalState != null">statistical_state = #{statisticalState},</if>
+        </trim>
+        where vehicle_data_id = #{vehicleDataId}
+    </update>
+
+    <delete id="deleteVehicleDrivingDataByVehicleDataId" parameterType="Long">
+        delete from vehicle_driving_data where vehicle_data_id = #{vehicleDataId}
+    </delete>
+
+    <delete id="deleteVehicleDrivingDataByVehicleDataIds" parameterType="String">
+        delete from vehicle_driving_data where vehicle_data_id in
+        <foreach item="vehicleDataId" collection="array" open="(" separator="," close=")">
+            #{vehicleDataId}
+        </foreach>
+    </delete>
+</mapper>

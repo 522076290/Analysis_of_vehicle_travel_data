@@ -3,7 +3,7 @@ package com.vdsa.common.enums;
 /**
  * 数据源
  * 
- * @author ruoyi
+ * @author lan
  */
 public enum DataSourceType
 {

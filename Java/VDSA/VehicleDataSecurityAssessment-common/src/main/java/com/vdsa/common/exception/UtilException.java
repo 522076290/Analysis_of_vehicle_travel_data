@@ -3,7 +3,7 @@ package com.vdsa.common.exception;
 /**
  * 工具类异常
  * 
- * @author ruoyi
+ * @author lan
  */
 public class UtilException extends RuntimeException
 {

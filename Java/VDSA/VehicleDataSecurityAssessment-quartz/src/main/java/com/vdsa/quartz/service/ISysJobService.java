@@ -8,7 +8,7 @@ import com.vdsa.quartz.domain.SysJob;
 /**
  * 定时任务调度信息信息 服务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ISysJobService
 {

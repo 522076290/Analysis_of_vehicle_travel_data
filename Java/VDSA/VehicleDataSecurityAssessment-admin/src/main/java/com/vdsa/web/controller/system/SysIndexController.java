@@ -9,7 +9,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * 首页
  *
- * @author ruoyi
+ * @author lan
  */
 @RestController
 public class SysIndexController

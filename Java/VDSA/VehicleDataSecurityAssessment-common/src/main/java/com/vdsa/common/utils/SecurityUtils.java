@@ -10,7 +10,7 @@ import com.vdsa.common.exception.ServiceException;
 /**
  * 安全服务工具类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class SecurityUtils
 {

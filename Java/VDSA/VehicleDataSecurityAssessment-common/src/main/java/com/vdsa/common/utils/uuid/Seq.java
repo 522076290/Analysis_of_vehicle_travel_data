@@ -5,7 +5,7 @@ import com.vdsa.common.utils.DateUtils;
 import com.vdsa.common.utils.StringUtils;
 
 /**
- * @author ruoyi 序列生成类
+ * @author lan 序列生成类
  */
 public class Seq
 {

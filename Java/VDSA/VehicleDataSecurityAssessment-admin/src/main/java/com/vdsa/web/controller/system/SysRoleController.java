@@ -34,7 +34,7 @@ import com.vdsa.system.service.ISysUserService;
 /**
  * 角色信息
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/system/role")

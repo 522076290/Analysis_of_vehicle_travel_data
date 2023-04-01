@@ -3,7 +3,7 @@ package com.vdsa.common.enums;
 /**
  * 用户状态
  * 
- * @author ruoyi
+ * @author lan
  */
 public enum UserStatus
 {

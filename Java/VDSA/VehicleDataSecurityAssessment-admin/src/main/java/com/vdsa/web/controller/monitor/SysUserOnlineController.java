@@ -26,7 +26,7 @@ import com.vdsa.system.service.ISysUserOnlineService;
 /**
  * 在线用户监控
  * 
- * @author ruoyi
+ * @author lan
  */
 @RestController
 @RequestMapping("/monitor/online")

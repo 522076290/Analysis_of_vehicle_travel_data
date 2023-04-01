@@ -6,7 +6,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * sql操作工具类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class SqlUtil
 {

@@ -3,7 +3,7 @@ package com.vdsa.common.exception;
 /**
  * 全局异常
  * 
- * @author ruoyi
+ * @author lan
  */
 public class GlobalException extends RuntimeException
 {

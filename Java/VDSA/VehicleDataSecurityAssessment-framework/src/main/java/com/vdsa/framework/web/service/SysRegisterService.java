@@ -21,7 +21,7 @@ import com.vdsa.system.service.ISysUserService;
 /**
  * 注册校验方法
  * 
- * @author ruoyi
+ * @author lan
  */
 @Component
 public class SysRegisterService

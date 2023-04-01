@@ -25,7 +25,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * 通用http发送方法
  * 
- * @author ruoyi
+ * @author lan
  */
 public class HttpUtils
 {

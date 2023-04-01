@@ -3,7 +3,7 @@ package com.vdsa.system.domain;
 /**
  * 当前在线会话
  * 
- * @author ruoyi
+ * @author lan
  */
 public class SysUserOnline
 {

@@ -10,7 +10,7 @@ import com.vdsa.common.core.domain.entity.SysMenu;
 /**
  * Treeselect树结构实体类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class TreeSelect implements Serializable
 {

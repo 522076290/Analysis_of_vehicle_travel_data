@@ -11,7 +11,7 @@ import com.vdsa.common.utils.spring.SpringUtils;
 /**
  * 字典工具类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class DictUtils
 {

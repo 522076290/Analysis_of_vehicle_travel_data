@@ -30,6 +30,7 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
+        <hutool.version>5.8.16</hutool.version>
     </properties>
 	
     <!-- 依赖声明 -->
@@ -170,6 +171,20 @@
                 <version>${vdsa.version}</version>
             </dependency>
 
+            <!-- 车辆数据分析管理模块 -->
+            <dependency>
+                <groupId>com.vdsa</groupId>
+                <artifactId>vdsa-vdd</artifactId>
+                <version>${vdsa.version}</version>
+            </dependency>
+
+            <!-- hutool工具包引入 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -180,6 +195,7 @@
         <module>VehicleDataSecurityAssessment-quartz</module>
         <module>VehicleDataSecurityAssessment-generator</module>
         <module>VehicleDataSecurityAssessment-common</module>
+        <module>VehicleDataSecurityAssessment-vehicledrivingdata</module>
     </modules>
     <packaging>pom</packaging>
 

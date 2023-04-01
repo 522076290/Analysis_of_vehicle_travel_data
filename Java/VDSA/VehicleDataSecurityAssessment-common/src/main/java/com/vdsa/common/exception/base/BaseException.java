@@ -6,7 +6,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * 基础异常
  * 
- * @author ruoyi
+ * @author lan
  */
 public class BaseException extends RuntimeException
 {

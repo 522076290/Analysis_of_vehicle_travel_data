@@ -9,7 +9,7 @@ import com.vdsa.system.domain.vo.RouterVo;
 /**
  * 菜单 业务层
  * 
- * @author ruoyi
+ * @author lan
  */
 public interface ISysMenuService
 {

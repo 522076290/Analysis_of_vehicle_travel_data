@@ -3,7 +3,7 @@ package com.vdsa.common.exception.user;
 /**
  * 用户不存在异常类
  * 
- * @author ruoyi
+ * @author lan
  */
 public class UserNotExistsException extends UserException
 {

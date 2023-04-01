@@ -5,7 +5,7 @@ import com.vdsa.common.utils.Arith;
 /**
  * CPU相关信息
  * 
- * @author ruoyi
+ * @author lan
  */
 public class Cpu
 {

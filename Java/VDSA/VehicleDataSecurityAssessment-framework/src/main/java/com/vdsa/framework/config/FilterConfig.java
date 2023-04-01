@@ -15,7 +15,7 @@ import com.vdsa.common.utils.StringUtils;
 /**
  * Filter配置
  *
- * @author ruoyi
+ * @author lan
  */
 @Configuration
 public class FilterConfig

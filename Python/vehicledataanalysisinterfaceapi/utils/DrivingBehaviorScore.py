@@ -170,6 +170,7 @@ bias_EC_sunny = np.matrix(
      0, 0, 0, 0, 0, 0,
      0, 0, 0, 0, 0, 0, ]).reshape(6, 6)
 
+
 # 根据天气情况确定bias矩阵，输入天气列表（包含1~3个str元素），返回bias和bias_EC矩阵：
 def bias_determine(weather):
     if len(weather) >= 1:
@@ -333,12 +334,58 @@ def normalization(mtx):  # 比例归一化
             mtx[j, i] = mtx[j, i] / sum
     return mtx
 
+
 # 车速稳定性判断，返回车速标准差：
 def Speed_Stability(df):
     return np.std(df['gps_speed'], ddof=1)
 
-def DrivingBehaviorScore(df):
 
+# 统计危险驾驶行为
+def Static_Behavior(df):
+    """
+    统计危险驾驶行为
+    :param df: 导入的驾驶数据
+    :return:speed_std 车速方差, rapid_acc_numbers 急加速次数, rapid_acc_duration 急加速时长, rapid_dec_numbers 急减速次数, rapid_dec_duration 急减速时长,
+            slide_frameOut_duration 熄火滑行时长, slide_frameOut_numbers 熄火滑行次数, overspeed_numbers 超速次数, overspeed_duration 超速时长,
+            fatigueDriving_numbers 疲劳驾驶次数, fatigueDriving_hours 疲劳驾驶时长, suddenTurn_numbers 急转弯次数, idle_preheating_numbers 怠速预热输出列表,
+            idle_preheating_mins 怠速预热时长, overlong_idle_numbers 超长怠速次数, overlong_idle_mins 超长怠速时长
+    """
+    weather_dict = genLocation_Date_Weather_Dict() # 获取天气字典
+    speed_std = Speed_Stability(df)  # 车速方差
+    acc_dec = acce_decelerate(df)  # 急加速急减速输出列表
+    rapid_acc_numbers = acc_dec[0]  # 急加速次数
+    rapid_acc_duration = int(acc_dec[1])  # 急加速时长
+    rapid_dec_numbers = acc_dec[2]  # 急减速次数
+    rapid_dec_duration = int(acc_dec[3])  # 急减速时长
+    slide_frameOut_list = SlideOnFrameOut(df)  # 熄火滑行输出列表
+    slide_frameOut_duration = slide_frameOut_list[0]  # 熄火滑行时长
+    slide_frameOut_numbers = slide_frameOut_list[1]  # 熄火滑行次数
+    overspeed_list = overspeed(df, 100)  # 超速输出列表
+    overspeed_numbers = overspeed_list[1]  # 超速次数
+    overspeed_duration = overspeed_list[0]  # 超速时长
+    fatigueDriving_list = fatigueDriving(df)  # 疲劳驾驶输出列表
+    fatigueDriving_numbers = fatigueDriving_list[1]  # 疲劳驾驶次数
+    fatigueDriving_hours = fatigueDriving_list[0]  # 疲劳驾驶时长
+    suddenTurn_numbers = suddenTurn(df, weather_dict)  # 急转弯次数
+    idle_preheating_list = idle_preheatint(df)  # 怠速预热输出列表
+    idle_preheating_numbers = idle_preheating_list[0]  # 怠速预热次数
+    idle_preheating_mins = idle_preheating_list[1]  # 怠速预热时长
+    overlong_idle_list = idling(df)  # 超长怠速输出列表
+    overlong_idle_numbers = overlong_idle_list[0]  # 超长怠速次数
+    overlong_idle_mins = overlong_idle_list[1]  # 超长怠速时长
+    return [speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration,
+            slide_frameOut_duration, slide_frameOut_numbers, overspeed_numbers, overspeed_duration,
+            fatigueDriving_numbers, fatigueDriving_hours, suddenTurn_numbers, idle_preheating_numbers,
+            idle_preheating_mins, overlong_idle_numbers, overlong_idle_mins]
+
+
+# 驾驶行为评分
+def DrivingBehaviorScore(df):
+    """
+    驾驶行为评分
+    :param df: 传进来的数据
+    :return:
+    """
     mtx_EC = np.matrix([1, 1 / 2, 1 / 3, 1 / 2, 1 / 2, 1 / 3,
                         2, 1, 1 / 2, 1, 1, 1 / 2,
                         3, 2, 1, 2, 2, 1,
@@ -354,7 +401,6 @@ def DrivingBehaviorScore(df):
                      1 / 3, 1 / 2, 1 / 2, 1 / 2, 2, 1 / 3, 1]).reshape(7, 7)  # 安全判断矩阵
     mtx_backup = copy.deepcopy(mtx)  # 备份一下原始矩阵，以便原始矩阵被修改时可以恢复
     mtx_EC_backup = copy.deepcopy((mtx_EC))
-
 
     # 对判断矩阵进行调整：
     weather_dict = genLocation_Date_Weather_Dict()
@@ -490,11 +536,11 @@ def DrivingBehaviorScore(df):
 
     # 计算安全模型总得分：
     score = weight[0] * score_overspeed + weight[1] * score_acc + weight[2] * score_dec + weight[3] * score_stb + \
-               weight[4] * score_slide + weight[5] * score_fati + weight[6] * score_suddenTurn
-    print("安全模型得分：",score)
+            weight[4] * score_slide + weight[5] * score_fati + weight[6] * score_suddenTurn
+    print("安全模型得分：", score)
     # 计算节能模型总得分：
     score_EC = weight_EC[0] * score_idlePre + weight_EC[1] * score_overspeed + weight_EC[2] * score_acc + \
-                  weight_EC[3] * score_dec + weight_EC[4] * score_stb + weight_EC[5] * score_overIdle
+               weight_EC[3] * score_dec + weight_EC[4] * score_stb + weight_EC[5] * score_overIdle
     print("节能模型得分：", score_EC)
     # 计算综合模型得分：
     score_total = (score / 2) + (score_EC / 2)

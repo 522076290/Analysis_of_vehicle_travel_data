@@ -61,6 +61,12 @@
             <artifactId>vdsa-generator</artifactId>
         </dependency>
 
+        <!-- 车辆数据分析管理模块 -->
+        <dependency>
+            <groupId>com.vdsa</groupId>
+            <artifactId>vdsa-vdd</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

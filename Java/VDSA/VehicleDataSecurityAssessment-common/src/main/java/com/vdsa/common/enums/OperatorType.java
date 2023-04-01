@@ -3,7 +3,7 @@ package com.vdsa.common.enums;
 /**
  * 操作人类别
  * 
- * @author ruoyi
+ * @author lan
  */
 public enum OperatorType
 {

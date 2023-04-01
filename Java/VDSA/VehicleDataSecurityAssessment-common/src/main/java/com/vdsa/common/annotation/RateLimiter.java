@@ -11,7 +11,7 @@ import com.vdsa.common.enums.LimitType;
 /**
  * 限流注解
  * 
- * @author ruoyi
+ * @author lan
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
