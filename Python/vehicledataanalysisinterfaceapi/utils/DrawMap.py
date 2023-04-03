@@ -1,5 +1,6 @@
 # coding:utf-8
 import folium
+import requests
 from django.apps import apps
 import pandas as pd
 import numpy as np
@@ -10,6 +11,8 @@ from pykalman import KalmanFilter
 import urllib.request
 import time
 import json
+
+from vehicledataanalysisinterfaceapi.utils.response.responsejava import uploaddrawmap
 
 # 设定卡尔曼滤波模型参数
 kf = KalmanFilter(
@@ -33,6 +36,8 @@ def drawMap(df):
     mydata1 = df.loc[:, ["lat", "lng"]].values.tolist()
     folium.PolyLine(mydata1, color='red').add_to(m1)
     m1.save(savemappath)
+    # 上传回给java管理后台
+    savemappath = uploaddrawmap(savemappath)
     return savemappath
 
 

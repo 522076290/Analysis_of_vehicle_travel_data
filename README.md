@@ -18,13 +18,13 @@
 
 - data	
 
-  ​	存放一些需要用到的部分数据
+  ​	存放一些使用到的车辆行驶数据以及天气数据
 
 
 
 ## 环境配置
 
-
+### PYTHON
 
 | python环境配置 |
 | :------------: |
@@ -32,3 +32,18 @@
 | Python 3.8.16  |
 |   pip 22.3.1   |
 
+
+
+### JAVA 
+
+首先感谢ruoyi的开发者提供方便的框架开发
+
+具体配置可以参考ruoyi
+
+文档地址：[http://doc.ruoyi.vip](https://gitee.com/link?target=http%3A%2F%2Fdoc.ruoyi.vip)
+
+| java环境配置 |
+| :----------: |
+|  JDK >= 1.8  |
+| MySQL >= 5.7 |
+| Maven >= 3.0 |

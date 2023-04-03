@@ -117,6 +117,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
                 //对于回调接口 可以直接访问
                 .antMatchers("/vehicledrivingdata/vehicledrivingdatacallback/**").permitAll()
+                // 开放上传接口给python使用
+                .antMatchers("/common/upload").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()

@@ -10,7 +10,7 @@ from vehicledataanalysisinterfaceapi.utils.DataPreProcessing import zeroVelocity
 from vehicledataanalysisinterfaceapi.utils.DrawMap import drawMap, baseDBSCANMapNoiseReduction, kalman_filter
 from vehicledataanalysisinterfaceapi.utils.DrivingBehaviorScore import DrivingBehaviorScore, Static_Behavior
 from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreProcessingcallback, \
-    datastatisticscallback
+    datastatisticscallback, drawmapcallback
 
 # Create your views here.
 
@@ -54,13 +54,24 @@ def drawmapapi(request):
     :param request:  post请求
     :return: 返回Json数据
     """
-    file_obj = request.FILES.get("file")
-    df = pd.read_csv(file_obj)
-    df = baseDBSCANMapNoiseReduction(df)  # DBSCAN降噪
-    df = kalman_filter(df, 2.0)  # 基于卡尔曼滤波进行平滑曲线
-    # df = correctionOfTrajectoryBaiDu(df)  # 调用百度接口进行绑路
-    savepath = drawMap(df)
-    request_data = {"code": 200, "message": "请求成功", "path": savepath}
+    res = json.loads(request.body)
+    filepath = javaFrontUrl + res["mapPath"]
+    df = pd.read_csv(filepath)
+
+    # 在新线程中执行耗时操作 处理数据
+    def draw_map():
+        df2 = baseDBSCANMapNoiseReduction(df)  # DBSCAN降噪
+        df2 = kalman_filter(df2, 2.0)  # 基于卡尔曼滤波进行平滑曲线
+        # df2 = correctionOfTrajectoryBaiDu(df2)  # 调用百度接口进行绑路
+        res["buildMapStatus"] = 2
+        res["mapPath"] = drawMap(df2)
+        drawmapcallback(res)
+
+    # 创建并启动新线程
+    thread = threading.Thread(target=draw_map)
+    thread.start()
+
+    request_data = {"code": 200, "message": "请求成功"}
     return JsonResponse(request_data, status=200, charset="utf-8")
 
 
