@@ -381,7 +381,7 @@ def Static_Behavior(df):
 
 
 # 驾驶行为评分
-def DrivingBehaviorScore(df):
+def DrivingBehaviorScore(df,statistics_values):
     """
     驾驶行为评分
     :param df: 传进来的数据
@@ -432,28 +432,22 @@ def DrivingBehaviorScore(df):
     print("节能指标权重列表：\n", weight_EC)
     print("(怠速预热，超速，急加速，急减速，车速稳定性，超长怠速)")
 
-    speed_std = Speed_Stability(df)  # 车速方差
-    acc_dec = acce_decelerate(df)  # 急加速急减速输出列表
-    rapid_acc_numbers = acc_dec[0]  # 急加速次数
-    rapid_acc_duration = int(acc_dec[1])  # 急加速时长
-    rapid_dec_numbers = acc_dec[2]  # 急减速次数
-    rapid_dec_duration = int(acc_dec[3])  # 急减速时长
-    slide_frameOut_list = SlideOnFrameOut(df)  # 熄火滑行输出列表
-    slide_frameOut_duration = slide_frameOut_list[0]  # 熄火滑行时长
-    slide_frameOut_numbers = slide_frameOut_list[1]  # 熄火滑行次数
-    overspeed_list = overspeed(df, 100)  # 超速输出列表
-    overspeed_numbers = overspeed_list[1]  # 超速次数
-    overspeed_duration = overspeed_list[0]  # 超速时长
-    fatigueDriving_list = fatigueDriving(df)  # 疲劳驾驶输出列表
-    fatigueDriving_numbers = fatigueDriving_list[1]  # 疲劳驾驶次数
-    fatigueDriving_hours = fatigueDriving_list[0]  # 疲劳驾驶时长
-    suddenTurn_numbers = suddenTurn(df, weather_dict)  # 急转弯次数
-    idle_preheating_list = idle_preheatint(df)  # 怠速预热输出列表
-    idle_preheating_numbers = idle_preheating_list[0]  # 怠速预热次数
-    idle_preheating_mins = idle_preheating_list[1]  # 怠速预热时长
-    overlong_idle_list = idling(df)  # 超长怠速输出列表
-    overlong_idle_numbers = overlong_idle_list[0]  # 超长怠速次数
-    overlong_idle_mins = overlong_idle_list[1]  # 超长怠速时长
+    speed_std = statistics_values[0]  # 车速方差
+    rapid_acc_numbers = statistics_values[1]  # 急加速次数
+    rapid_acc_duration = int(statistics_values[2])  # 急加速时长
+    rapid_dec_numbers = statistics_values[3]  # 急减速次数
+    rapid_dec_duration = int(statistics_values[4])  # 急减速时长
+    slide_frameOut_duration = int(float(statistics_values[5]))  # 熄火滑行时长
+    slide_frameOut_numbers = statistics_values[6]  # 熄火滑行次数
+    overspeed_numbers = statistics_values[7]  # 超速次数
+    overspeed_duration = int(float(statistics_values[8]))  # 超速时长
+    fatigueDriving_numbers = statistics_values[9]  # 疲劳驾驶次数
+    fatigueDriving_hours = int(float(statistics_values[10]))  # 疲劳驾驶时长
+    suddenTurn_numbers = statistics_values[11]  # 急转弯次数
+    idle_preheating_numbers = statistics_values[12]  # 怠速预热次数
+    idle_preheating_mins = int(float(statistics_values[13]))  # 怠速预热时长
+    overlong_idle_numbers = statistics_values[14]  # 超长怠速次数
+    overlong_idle_mins = int(float(statistics_values[15]))  # 超长怠速时长
 
     # 计算得分：
     # 车速稳定性得分score_stb：
@@ -548,3 +542,5 @@ def DrivingBehaviorScore(df):
     print("综合模型得分：", score_total)
     mtx = copy.deepcopy(mtx_backup)  # 恢复初始判断矩阵
     mtx_EC = copy.deepcopy(mtx_EC_backup)
+
+    return [score, score_EC, score_total]

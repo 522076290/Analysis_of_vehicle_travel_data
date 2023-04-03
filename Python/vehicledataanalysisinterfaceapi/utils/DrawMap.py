@@ -29,7 +29,7 @@ kf = KalmanFilter(
 def drawMap(df):
     """
         :param df: 需要绘制地图的数据
-        :return: 没有返回值
+        :return: savemappath 返回地图的存放路径
     """
     savemappath = apps.get_app_config('vehicledataanalysisinterfaceapi').mapsavepath + '\\map.html'
     m1 = folium.Map(location=[df['lat'].mean(), df['lng'].mean()], zoom_start=11)

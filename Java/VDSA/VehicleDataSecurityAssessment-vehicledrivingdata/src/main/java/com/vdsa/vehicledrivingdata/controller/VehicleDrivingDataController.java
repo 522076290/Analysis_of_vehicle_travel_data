@@ -122,6 +122,12 @@ public class VehicleDrivingDataController extends BaseController
 	@DeleteMapping("/{vehicleDataIds}")
     public AjaxResult remove(@PathVariable Long[] vehicleDataIds)
     {
-        return toAjax(vehicleDrivingDataService.deleteVehicleDrivingDataByVehicleDataIds(vehicleDataIds));
+        AjaxResult ajaxResult = new AjaxResult();
+        try{
+            ajaxResult = toAjax(vehicleDrivingDataService.deleteVehicleDrivingDataByVehicleDataIds(vehicleDataIds));
+        }catch (Exception e){
+            return  AjaxResult.error("还有对应的地图数据没有删除 !!!!!");
+        }
+        return ajaxResult;
     }
 }

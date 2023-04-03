@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vdsa.vehicledrivingdata.mapper.VehicleDrivingBehaviorScoreMapper">
+    
+    <resultMap type="VehicleDrivingBehaviorScore" id="VehicleDrivingBehaviorScoreResult">
+        <result property="id"    column="id"    />
+        <result property="vehicleDataId"    column="vehicle_data_id"    />
+        <result property="scoringStatus"    column="scoring_status"    />
+        <result property="securityModelScore"    column="security_model_score"    />
+        <result property="energySavingModelScore"    column="energy_saving_model_score"    />
+        <result property="compositeModelScore"    column="composite_model_score"    />
+        <result property="comprehensiveAssessment"    column="comprehensive_assessment"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectVehicleDrivingBehaviorScoreVo">
+        select id, vehicle_data_id, scoring_status, security_model_score, energy_saving_model_score, composite_model_score, comprehensive_assessment, create_by, create_time, update_by, update_time, remark from vehicle_driving_behavior_score
+    </sql>
+
+    <select id="selectVehicleDrivingBehaviorScoreList" parameterType="VehicleDrivingBehaviorScore" resultMap="VehicleDrivingBehaviorScoreResult">
+        <include refid="selectVehicleDrivingBehaviorScoreVo"/>
+        <where>  
+            <if test="vehicleDataId != null "> and vehicle_data_id = #{vehicleDataId}</if>
+            <if test="scoringStatus != null "> and scoring_status = #{scoringStatus}</if>
+            <if test="securityModelScore != null "> and security_model_score = #{securityModelScore}</if>
+            <if test="energySavingModelScore != null "> and energy_saving_model_score = #{energySavingModelScore}</if>
+            <if test="compositeModelScore != null "> and composite_model_score = #{compositeModelScore}</if>
+            <if test="comprehensiveAssessment != null  and comprehensiveAssessment != ''"> and comprehensive_assessment = #{comprehensiveAssessment}</if>
+        </where>
+    </select>
+    
+    <select id="selectVehicleDrivingBehaviorScoreById" parameterType="Long" resultMap="VehicleDrivingBehaviorScoreResult">
+        <include refid="selectVehicleDrivingBehaviorScoreVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertVehicleDrivingBehaviorScore" parameterType="VehicleDrivingBehaviorScore" useGeneratedKeys="true" keyProperty="id">
+        insert into vehicle_driving_behavior_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vehicleDataId != null">vehicle_data_id,</if>
+            <if test="scoringStatus != null">scoring_status,</if>
+            <if test="securityModelScore != null">security_model_score,</if>
+            <if test="energySavingModelScore != null">energy_saving_model_score,</if>
+            <if test="compositeModelScore != null">composite_model_score,</if>
+            <if test="comprehensiveAssessment != null">comprehensive_assessment,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="vehicleDataId != null">#{vehicleDataId},</if>
+            <if test="scoringStatus != null">#{scoringStatus},</if>
+            <if test="securityModelScore != null">#{securityModelScore},</if>
+            <if test="energySavingModelScore != null">#{energySavingModelScore},</if>
+            <if test="compositeModelScore != null">#{compositeModelScore},</if>
+            <if test="comprehensiveAssessment != null">#{comprehensiveAssessment},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVehicleDrivingBehaviorScore" parameterType="VehicleDrivingBehaviorScore">
+        update vehicle_driving_behavior_score
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vehicleDataId != null">vehicle_data_id = #{vehicleDataId},</if>
+            <if test="scoringStatus != null">scoring_status = #{scoringStatus},</if>
+            <if test="securityModelScore != null">security_model_score = #{securityModelScore},</if>
+            <if test="energySavingModelScore != null">energy_saving_model_score = #{energySavingModelScore},</if>
+            <if test="compositeModelScore != null">composite_model_score = #{compositeModelScore},</if>
+            <if test="comprehensiveAssessment != null">comprehensive_assessment = #{comprehensiveAssessment},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVehicleDrivingBehaviorScoreById" parameterType="Long">
+        delete from vehicle_driving_behavior_score where id = #{id}
+    </delete>
+
+    <delete id="deleteVehicleDrivingBehaviorScoreByIds" parameterType="String">
+        delete from vehicle_driving_behavior_score where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

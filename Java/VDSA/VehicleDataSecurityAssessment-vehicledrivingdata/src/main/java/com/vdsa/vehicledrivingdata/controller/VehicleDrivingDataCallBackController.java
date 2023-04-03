@@ -3,7 +3,9 @@ package com.vdsa.vehicledrivingdata.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vdsa.vehicledrivingdata.domain.VehicleDrivingBehaviorScore;
 import com.vdsa.vehicledrivingdata.domain.VehicleTravelMap;
+import com.vdsa.vehicledrivingdata.service.IVehicleDrivingBehaviorScoreService;
 import com.vdsa.vehicledrivingdata.service.IVehicleTravelMapService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class VehicleDrivingDataCallBackController extends BaseController
     @Autowired
     private IVehicleTravelMapService vehicleTravelMapService;
 
+    @Autowired
+    private IVehicleDrivingBehaviorScoreService vehicleDrivingBehaviorScoreService;
+
     /**
      * 车辆驾驶行为数据预处理回调接口
      */
@@ -67,8 +72,18 @@ public class VehicleDrivingDataCallBackController extends BaseController
     @PutMapping("/draw-map-callback")
     public AjaxResult drawMap(@RequestBody VehicleTravelMap vehicleTravelMap)
     {
-        vehicleTravelMap.getBuildMapStatus();
         return toAjax(vehicleTravelMapService.updateVehicleTravelMap(vehicleTravelMap));
+    }
+
+    /**
+     * 得分生成回调
+     */
+    @Log(title = "车辆驾驶行为数据预处理", businessType = BusinessType.UPDATE)
+    @PutMapping("/score-callback")
+    public AjaxResult drawMap(@RequestBody VehicleDrivingBehaviorScore vehicleDrivingBehaviorScore)
+    {
+        vehicleDrivingBehaviorScore.getScoringStatus();
+        return toAjax(vehicleDrivingBehaviorScoreService.updateVehicleDrivingBehaviorScore(vehicleDrivingBehaviorScore));
     }
 
 }

@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vdsa.vehicledrivingdata.mapper.VehicleTravelMapMapper">
-    
+
     <resultMap type="VehicleTravelMap" id="VehicleTravelMapResult">
         <result property="id"    column="id"    />
         <result property="vehicleDataId"    column="vehicle_data_id"    />
@@ -22,18 +22,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectVehicleTravelMapList" parameterType="VehicleTravelMap" resultMap="VehicleTravelMapResult">
         <include refid="selectVehicleTravelMapVo"/>
-        <where>  
+        <where>
             <if test="vehicleDataId != null "> and vehicle_data_id = #{vehicleDataId}</if>
             <if test="mapPath != null  and mapPath != ''"> and map_path = #{mapPath}</if>
             <if test="buildMapStatus != null "> and build_map_status = #{buildMapStatus}</if>
         </where>
     </select>
-    
+
     <select id="selectVehicleTravelMapById" parameterType="Long" resultMap="VehicleTravelMapResult">
         <include refid="selectVehicleTravelMapVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertVehicleTravelMap" parameterType="VehicleTravelMap" useGeneratedKeys="true" keyProperty="id">
         insert into vehicle_travel_map
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteVehicleTravelMapByIds" parameterType="String">
-        delete from vehicle_travel_map where id in 
+        delete from vehicle_travel_map where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

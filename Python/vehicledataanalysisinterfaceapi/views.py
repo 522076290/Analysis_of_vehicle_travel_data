@@ -10,7 +10,7 @@ from vehicledataanalysisinterfaceapi.utils.DataPreProcessing import zeroVelocity
 from vehicledataanalysisinterfaceapi.utils.DrawMap import drawMap, baseDBSCANMapNoiseReduction, kalman_filter
 from vehicledataanalysisinterfaceapi.utils.DrivingBehaviorScore import DrivingBehaviorScore, Static_Behavior
 from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreProcessingcallback, \
-    datastatisticscallback, drawmapcallback
+    datastatisticscallback, drawmapcallback, datascorecallback
 
 # Create your views here.
 
@@ -18,6 +18,15 @@ from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreP
 javaFrontUrl = apps.get_app_config('vehicledataanalysisinterfaceapi').javawebpath
 # csv文件保存路径
 csvSavePath = apps.get_app_config('vehicledataanalysisinterfaceapi').filesavepath
+
+# 车辆驾驶数据的字段
+vehicleDrivingDataFields = ['speedStd', 'rapidAccNumbers', 'rapidAccDuration', 'rapidDecNumbers', 'rapidDecDuration',
+                  'slideFrameoutDuration', 'slideFrameoutNumbers', 'overspeedNumbers', 'overspeedDuration',
+                  'fatiguedrivingNumbers', 'fatiguedrivingHours', 'suddenturnNumbers', 'idlePreheatingNumbers',
+                  'idlePreheatingMins', 'overlongIdleNumbers', 'overlongIdleMins']
+
+# 车辆驾驶得分的字段
+vehicleDrivingBehaviorScoreFileds=['securityModelScore', 'energySavingModelScore', 'compositeModelScore']
 
 
 def datapreprocessingapi(request):
@@ -75,7 +84,7 @@ def drawmapapi(request):
     return JsonResponse(request_data, status=200, charset="utf-8")
 
 
-def trafficStatistics(request):
+def trafficStatisticsapi(request):
     """
     根据传入的行车数据统计出当前车辆的数据
     获取request 传入的csv文件 统计出当前车辆的数据 并返回处理结果
@@ -90,12 +99,8 @@ def trafficStatistics(request):
     def statistics_data():
         drive_behavior_statics = Static_Behavior(df)
         # 给对应的字段进行数据填充
-        fields = ['speedStd', 'rapidAccNumbers', 'rapidAccDuration', 'rapidDecNumbers', 'rapidDecDuration',
-                  'slideFrameoutDuration', 'slideFrameoutNumbers', 'overspeedNumbers', 'overspeedDuration',
-                  'fatiguedrivingNumbers', 'fatiguedrivingHours', 'suddenturnNumbers', 'idlePreheatingNumbers',
-                  'idlePreheatingMins', 'overlongIdleNumbers', 'overlongIdleMins']
         count = 0
-        for field in fields:
+        for field in vehicleDrivingDataFields:
             res[field] = drive_behavior_statics[count]
             count += 1
         # 修改统计状态
@@ -104,6 +109,46 @@ def trafficStatistics(request):
 
     # 创建并启动新线程
     thread = threading.Thread(target=statistics_data)
+    thread.start()
+
+    request_data = {"code": 200, "message": "请求成功", }
+    return JsonResponse(request_data, status=200, charset="utf-8")
+
+
+def drivingbehaviorevaluationapi(request):
+    """
+    计算车辆驾驶行为得分情况
+    获取request 传入的csv文件 统计出当前车辆的数据 并返回处理结果
+    :param request: post请求
+    :return: 返回Json数据
+    """
+    # 取出数据
+    res = json.loads(request.body)
+    vehicleDrivingBehaviorScoreJson = json.loads(res.get("vehicleDrivingBehaviorScoreJson"))
+    vehicleDrivingDataJson = json.loads(res.get("vehicleDrivingDataJson"))
+
+    # 读取df数据
+    filepath = javaFrontUrl + vehicleDrivingDataJson["dataPath"]
+    df = pd.read_csv(filepath)
+
+    statistics_values = []
+    for field in vehicleDrivingDataFields:
+        statistics_values.append(vehicleDrivingDataJson.get(field))
+
+    # 在新线程中执行耗时操作 处理数据
+    def driving_score():
+        drive_score = DrivingBehaviorScore(df, statistics_values)
+        # 给对应的字段进行数据填充
+        count = 0
+        for field in vehicleDrivingBehaviorScoreFileds:
+            vehicleDrivingBehaviorScoreJson[field] = drive_score[count]
+            count += 1
+        # 修改统计状态
+        vehicleDrivingBehaviorScoreJson["scoringStatus"] = 2
+        datascorecallback(vehicleDrivingBehaviorScoreJson)
+
+    # 创建并启动新线程
+    thread = threading.Thread(target=driving_score)
     thread.start()
 
     request_data = {"code": 200, "message": "请求成功", }

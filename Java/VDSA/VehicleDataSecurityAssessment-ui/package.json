@@ -1,8 +1,8 @@
 {
-  "name": "ruoyi",
-  "version": "3.8.5",
+  "name": "vdsa",
+  "version": "1.0.0",
   "description": "运输车辆安全评估系统",
-  "author": "若依",
+  "author": "岚",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
@@ -33,7 +33,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
+    "url": "https://github.com/522076290/Analysis_of_vehicle_travel_data"
   },
   "dependencies": {
     "@riophae/vue-treeselect": "0.4.0",
