@@ -2,6 +2,9 @@ package com.vdsa.vehicledrivingdata.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.vdsa.vehicledrivingdata.domain.VehicleTravelMap;
+import com.vdsa.vehicledrivingdata.service.IVehicleTravelMapService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +37,9 @@ public class VehicleDrivingDataCallBackController extends BaseController
     @Autowired
     private IVehicleDrivingDataService vehicleDrivingDataService;
 
+    @Autowired
+    private IVehicleTravelMapService vehicleTravelMapService;
+
     /**
      * 车辆驾驶行为数据预处理回调接口
      */
@@ -41,7 +47,6 @@ public class VehicleDrivingDataCallBackController extends BaseController
     @PutMapping("/preprocessing-callback")
     public AjaxResult preprocessing(@RequestBody VehicleDrivingData vehicleDrivingData)
     {
-        vehicleDrivingData.getPreprocessingState();
         return toAjax(vehicleDrivingDataService.updateVehicleDrivingData(vehicleDrivingData));
     }
 
@@ -52,7 +57,18 @@ public class VehicleDrivingDataCallBackController extends BaseController
     @PutMapping("/statistics-callback")
     public AjaxResult statistics(@RequestBody VehicleDrivingData vehicleDrivingData)
     {
-        vehicleDrivingData.getStatisticalState();
         return toAjax(vehicleDrivingDataService.updateVehicleDrivingData(vehicleDrivingData));
     }
+
+    /**
+     * 地图生成回调
+     */
+    @Log(title = "车辆驾驶行为数据预处理", businessType = BusinessType.UPDATE)
+    @PutMapping("/draw-map-callback")
+    public AjaxResult drawMap(@RequestBody VehicleTravelMap vehicleTravelMap)
+    {
+        vehicleTravelMap.getBuildMapStatus();
+        return toAjax(vehicleTravelMapService.updateVehicleTravelMap(vehicleTravelMap));
+    }
+
 }

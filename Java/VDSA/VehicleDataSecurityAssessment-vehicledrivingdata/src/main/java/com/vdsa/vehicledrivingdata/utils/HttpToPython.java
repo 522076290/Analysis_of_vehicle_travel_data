@@ -43,4 +43,16 @@ public class HttpToPython {
                 .execute().body();
     }
 
+
+    /**
+     * 车辆行驶地图绘制
+     * @param json
+     */
+    public static void drawMap(String json){
+        String url = pythonApiPath+"drawMap/";
+        String result2 = HttpRequest.post(url)
+                .body(json)
+                .execute().body();
+    }
+
 }

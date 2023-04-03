@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vdsa.vehicledrivingdata.mapper.VehicleTravelMapMapper">
+    
+    <resultMap type="VehicleTravelMap" id="VehicleTravelMapResult">
+        <result property="id"    column="id"    />
+        <result property="vehicleDataId"    column="vehicle_data_id"    />
+        <result property="mapPath"    column="map_path"    />
+        <result property="buildMapStatus"    column="build_map_status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectVehicleTravelMapVo">
+        select id, vehicle_data_id, map_path, build_map_status, create_by, create_time, update_by, update_time, remark from vehicle_travel_map
+    </sql>
+
+    <select id="selectVehicleTravelMapList" parameterType="VehicleTravelMap" resultMap="VehicleTravelMapResult">
+        <include refid="selectVehicleTravelMapVo"/>
+        <where>  
+            <if test="vehicleDataId != null "> and vehicle_data_id = #{vehicleDataId}</if>
+            <if test="mapPath != null  and mapPath != ''"> and map_path = #{mapPath}</if>
+            <if test="buildMapStatus != null "> and build_map_status = #{buildMapStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectVehicleTravelMapById" parameterType="Long" resultMap="VehicleTravelMapResult">
+        <include refid="selectVehicleTravelMapVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertVehicleTravelMap" parameterType="VehicleTravelMap" useGeneratedKeys="true" keyProperty="id">
+        insert into vehicle_travel_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vehicleDataId != null">vehicle_data_id,</if>
+            <if test="mapPath != null">map_path,</if>
+            <if test="buildMapStatus != null">build_map_status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="vehicleDataId != null">#{vehicleDataId},</if>
+            <if test="mapPath != null">#{mapPath},</if>
+            <if test="buildMapStatus != null">#{buildMapStatus},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVehicleTravelMap" parameterType="VehicleTravelMap">
+        update vehicle_travel_map
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vehicleDataId != null">vehicle_data_id = #{vehicleDataId},</if>
+            <if test="mapPath != null">map_path = #{mapPath},</if>
+            <if test="buildMapStatus != null">build_map_status = #{buildMapStatus},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVehicleTravelMapById" parameterType="Long">
+        delete from vehicle_travel_map where id = #{id}
+    </delete>
+
+    <delete id="deleteVehicleTravelMapByIds" parameterType="String">
+        delete from vehicle_travel_map where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
