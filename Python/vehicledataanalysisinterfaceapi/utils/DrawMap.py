@@ -6,9 +6,11 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import DBSCAN
 import seaborn as sns
+from sklearn.model_selection import GridSearchCV
 from sklearn.neighbors import DistanceMetric
 from pykalman import KalmanFilter
 import urllib.request
+from sklearn.metrics import silhouette_score, make_scorer
 import time
 import json
 
@@ -23,7 +25,6 @@ kf = KalmanFilter(
     observation_covariance=np.eye(2),
     transition_covariance=0.1 * np.eye(2)
 )
-
 
 
 def drawMap(df):
@@ -57,6 +58,7 @@ def baseDBSCANMapNoiseReduction(df):
     EARTH_RADIUS_KM = 6371.0088
     # 设置进制为米
     METERS = 1000.0
+
     # 一次无法处理大量数据 所以分批次处理 每次20000条记录
     m = 20000
     resultofclustering = []
@@ -134,7 +136,7 @@ def correctionOfTrajectoryBaiDu(df):
         mydata3.append(r)
         pass
 
-    for i in range(0,  len(mydata3)):
+    for i in range(0, len(mydata3)):
         url = 'https://api.map.baidu.com/rectify/v1/track?'
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'

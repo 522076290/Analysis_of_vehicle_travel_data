@@ -340,12 +340,46 @@ def Speed_Stability(df):
     return np.std(df['gps_speed'], ddof=1)
 
 
+# 统计平均速度
+def avg_speed(df):
+    sum = 0
+    count = 0
+    for i in df.index:
+        if df.loc[i]['gps_speed'] > 0:
+            sum += df.loc[i]['gps_speed']
+            count += 1
+    if count == 0:
+        avg_spd = 0
+    else:
+        avg_spd = sum / count
+    return avg_spd
+
+def total_distance_driving_time_average_speed(df):
+    # 将时间戳转换为 Pandas 中的日期时间对象
+    df.loc[:, 'location_time'] = pd.to_datetime(df['location_time'])
+    # 剔除 GPS 速度为 0 的时间段
+    df = df[df['gps_speed'] > 0]
+    df.loc[:, 'delta_speed'] = df['gps_speed'].diff()
+    df.loc[:, 'delta_position'] = np.sqrt((df['lat'].diff() ** 2) + (df['lng'].diff() ** 2))
+    df.loc[:, 'driving'] = (df['delta_speed'] > -10) & (df['delta_position'] > 0.001)
+    df.loc[:, 'driving_time'] = (df['location_time'].astype('datetime64[s]') -
+                                 df['location_time'].astype('datetime64[s]').shift(1)).dt.seconds
+    # 将休息时间（驾驶状态为 False）的驾驶时间设置为 0
+    df.loc[~df['driving'], 'driving_time'] = 0
+    # 计算总驾驶里程和实际驾驶时间
+    total_distance = df['mileage'].iloc[-1] - df['mileage'].iloc[0]
+    driving_time = df['driving_time'].sum() / 3600
+    # 计算实际驾驶时长的平均驾驶速度
+    mean_speed = round(avg_speed(df), 2)
+    return [total_distance, driving_time, mean_speed]
+
 # 统计危险驾驶行为
 def Static_Behavior(df):
     """
     统计危险驾驶行为
     :param df: 导入的驾驶数据
-    :return:speed_std 车速方差, rapid_acc_numbers 急加速次数, rapid_acc_duration 急加速时长, rapid_dec_numbers 急减速次数, rapid_dec_duration 急减速时长,
+    :return:total_distance 总驾驶里程 driving_time 实际驾驶时间 mean_speed 平均速度 speed_std 车速方差, rapid_acc_numbers 急加速次数, rapid_acc_duration 急加速时长,
+            rapid_dec_numbers 急减速次数, rapid_dec_duration 急减速时长,
             slide_frameOut_duration 熄火滑行时长, slide_frameOut_numbers 熄火滑行次数, overspeed_numbers 超速次数, overspeed_duration 超速时长,
             fatigueDriving_numbers 疲劳驾驶次数, fatigueDriving_hours 疲劳驾驶时长, suddenTurn_numbers 急转弯次数, idle_preheating_numbers 怠速预热次数,
             idle_preheating_mins 怠速预热时长, overlong_idle_numbers 超长怠速次数, overlong_idle_mins 超长怠速时长
@@ -373,8 +407,12 @@ def Static_Behavior(df):
     overlong_idle_list = idling(df)  # 超长怠速输出列表
     overlong_idle_numbers = overlong_idle_list[0]  # 超长怠速次数
     overlong_idle_mins = overlong_idle_list[1]  # 超长怠速时长
+    distance_driving_time_average_speed = total_distance_driving_time_average_speed(df) # 统计总驾驶里程和实际驾驶时间和平均速度
+    total_distance = int(distance_driving_time_average_speed[0])
+    driving_time = int(distance_driving_time_average_speed[1])
+    mean_speed = int(distance_driving_time_average_speed[2])
 
-    return [speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration,
+    return [total_distance, driving_time, mean_speed, speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration,
             slide_frameOut_duration, slide_frameOut_numbers, overspeed_numbers, overspeed_duration,
             fatigueDriving_numbers, fatigueDriving_hours, suddenTurn_numbers, idle_preheating_numbers,
             idle_preheating_mins, overlong_idle_numbers, overlong_idle_mins]

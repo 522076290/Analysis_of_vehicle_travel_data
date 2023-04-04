@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -8,6 +7,9 @@
         <result property="vehicleDataId"    column="vehicle_data_id"    />
         <result property="userId"    column="user_id"    />
         <result property="dataPath"    column="data_path"    />
+        <result property="totalDistance"    column="total_distance"    />
+        <result property="drivingTime"    column="driving_time"    />
+        <result property="meanSpeed"    column="mean_speed"    />
         <result property="speedStd"    column="speed_std"    />
         <result property="rapidAccNumbers"    column="rapid_acc_numbers"    />
         <result property="rapidAccDuration"    column="rapid_acc_duration"    />
@@ -29,7 +31,7 @@
     </resultMap>
 
     <sql id="selectVehicleDrivingDataVo">
-        select vehicle_data_id, user_id, data_path, speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration, slide_frameout_numbers, slide_frameout_duration, overspeed_numbers, overspeed_duration, fatigueDriving_numbers, fatigueDriving_hours, suddenTurn_numbers, idle_preheating_numbers, idle_preheating_mins, overlong_idle_numbers, overlong_idle_mins, preprocessing_state, statistical_state from vehicle_driving_data
+        select vehicle_data_id, user_id, data_path, total_distance, driving_time, mean_speed, speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration, slide_frameout_numbers, slide_frameout_duration, overspeed_numbers, overspeed_duration, fatigueDriving_numbers, fatigueDriving_hours, suddenTurn_numbers, idle_preheating_numbers, idle_preheating_mins, overlong_idle_numbers, overlong_idle_mins, preprocessing_state, statistical_state from vehicle_driving_data
     </sql>
 
     <select id="selectVehicleDrivingDataList" parameterType="VehicleDrivingData" resultMap="VehicleDrivingDataResult">
@@ -37,22 +39,25 @@
         <where>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="dataPath != null  and dataPath != ''"> and data_path = #{dataPath}</if>
+            <if test="totalDistance != null "> and total_distance = #{totalDistance}</if>
+            <if test="drivingTime != null "> and driving_time = #{drivingTime}</if>
+            <if test="meanSpeed != null "> and mean_speed = #{meanSpeed}</if>
             <if test="speedStd != null "> and speed_std = #{speedStd}</if>
             <if test="rapidAccNumbers != null "> and rapid_acc_numbers = #{rapidAccNumbers}</if>
-            <if test="rapidAccDuration != null  and rapidAccDuration != ''"> and rapid_acc_duration = #{rapidAccDuration}</if>
+            <if test="rapidAccDuration != null "> and rapid_acc_duration = #{rapidAccDuration}</if>
             <if test="rapidDecNumbers != null "> and rapid_dec_numbers = #{rapidDecNumbers}</if>
-            <if test="rapidDecDuration != null  and rapidDecDuration != ''"> and rapid_dec_duration = #{rapidDecDuration}</if>
+            <if test="rapidDecDuration != null "> and rapid_dec_duration = #{rapidDecDuration}</if>
             <if test="slideFrameoutNumbers != null "> and slide_frameout_numbers = #{slideFrameoutNumbers}</if>
-            <if test="slideFrameoutDuration != null  and slideFrameoutDuration != ''"> and slide_frameout_duration = #{slideFrameoutDuration}</if>
+            <if test="slideFrameoutDuration != null "> and slide_frameout_duration = #{slideFrameoutDuration}</if>
             <if test="overspeedNumbers != null "> and overspeed_numbers = #{overspeedNumbers}</if>
-            <if test="overspeedDuration != null  and overspeedDuration != ''"> and overspeed_duration = #{overspeedDuration}</if>
+            <if test="overspeedDuration != null "> and overspeed_duration = #{overspeedDuration}</if>
             <if test="fatiguedrivingNumbers != null "> and fatigueDriving_numbers = #{fatiguedrivingNumbers}</if>
-            <if test="fatiguedrivingHours != null  and fatiguedrivingHours != ''"> and fatigueDriving_hours = #{fatiguedrivingHours}</if>
+            <if test="fatiguedrivingHours != null "> and fatigueDriving_hours = #{fatiguedrivingHours}</if>
             <if test="suddenturnNumbers != null "> and suddenTurn_numbers = #{suddenturnNumbers}</if>
             <if test="idlePreheatingNumbers != null "> and idle_preheating_numbers = #{idlePreheatingNumbers}</if>
-            <if test="idlePreheatingMins != null  and idlePreheatingMins != ''"> and idle_preheating_mins = #{idlePreheatingMins}</if>
+            <if test="idlePreheatingMins != null "> and idle_preheating_mins = #{idlePreheatingMins}</if>
             <if test="overlongIdleNumbers != null "> and overlong_idle_numbers = #{overlongIdleNumbers}</if>
-            <if test="overlongIdleMins != null  and overlongIdleMins != ''"> and overlong_idle_mins = #{overlongIdleMins}</if>
+            <if test="overlongIdleMins != null "> and overlong_idle_mins = #{overlongIdleMins}</if>
             <if test="preprocessingState != null "> and preprocessing_state = #{preprocessingState}</if>
             <if test="statisticalState != null "> and statistical_state = #{statisticalState}</if>
         </where>
@@ -68,6 +73,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">user_id,</if>
             <if test="dataPath != null and dataPath != ''">data_path,</if>
+            <if test="totalDistance != null">total_distance,</if>
+            <if test="drivingTime != null">driving_time,</if>
+            <if test="meanSpeed != null">mean_speed,</if>
             <if test="speedStd != null">speed_std,</if>
             <if test="rapidAccNumbers != null">rapid_acc_numbers,</if>
             <if test="rapidAccDuration != null">rapid_acc_duration,</if>
@@ -90,6 +98,9 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId},</if>
             <if test="dataPath != null and dataPath != ''">#{dataPath},</if>
+            <if test="totalDistance != null">#{totalDistance},</if>
+            <if test="drivingTime != null">#{drivingTime},</if>
+            <if test="meanSpeed != null">#{meanSpeed},</if>
             <if test="speedStd != null">#{speedStd},</if>
             <if test="rapidAccNumbers != null">#{rapidAccNumbers},</if>
             <if test="rapidAccDuration != null">#{rapidAccDuration},</if>
@@ -116,6 +127,9 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="userId != null">user_id = #{userId},</if>
             <if test="dataPath != null and dataPath != ''">data_path = #{dataPath},</if>
+            <if test="totalDistance != null">total_distance = #{totalDistance},</if>
+            <if test="drivingTime != null">driving_time = #{drivingTime},</if>
+            <if test="meanSpeed != null">mean_speed = #{meanSpeed},</if>
             <if test="speedStd != null">speed_std = #{speedStd},</if>
             <if test="rapidAccNumbers != null">rapid_acc_numbers = #{rapidAccNumbers},</if>
             <if test="rapidAccDuration != null">rapid_acc_duration = #{rapidAccDuration},</if>

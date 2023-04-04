@@ -26,6 +26,18 @@ public class VehicleDrivingData extends BaseEntity
     @Excel(name = "文件上传地址")
     private String dataPath;
 
+    /** 总里程 */
+    @Excel(name = "总里程")
+    private Long totalDistance;
+
+    /** 实际驾驶时间 */
+    @Excel(name = "实际驾驶时间")
+    private Long drivingTime;
+
+    /** 平均驾驶速度 */
+    @Excel(name = "平均驾驶速度")
+    private Long meanSpeed;
+
     /** 车速方差 */
     @Excel(name = "车速方差")
     private Long speedStd;
@@ -36,7 +48,7 @@ public class VehicleDrivingData extends BaseEntity
 
     /** 急加速时长 */
     @Excel(name = "急加速时长")
-    private String rapidAccDuration;
+    private Long rapidAccDuration;
 
     /** 急减速次数 */
     @Excel(name = "急减速次数")
@@ -44,7 +56,7 @@ public class VehicleDrivingData extends BaseEntity
 
     /** 急减速时长 */
     @Excel(name = "急减速时长")
-    private String rapidDecDuration;
+    private Long rapidDecDuration;
 
     /** 熄火滑行次数 */
     @Excel(name = "熄火滑行次数")
@@ -52,7 +64,7 @@ public class VehicleDrivingData extends BaseEntity
 
     /** 熄火滑行时长 */
     @Excel(name = "熄火滑行时长")
-    private String slideFrameoutDuration;
+    private Long slideFrameoutDuration;
 
     /** 超速次数 */
     @Excel(name = "超速次数")
@@ -60,7 +72,7 @@ public class VehicleDrivingData extends BaseEntity
 
     /** 超速时长 */
     @Excel(name = "超速时长")
-    private String overspeedDuration;
+    private Long overspeedDuration;
 
     /** 疲劳驾驶次数 */
     @Excel(name = "疲劳驾驶次数")
@@ -68,7 +80,7 @@ public class VehicleDrivingData extends BaseEntity
 
     /** 疲劳驾驶时长 */
     @Excel(name = "疲劳驾驶时长")
-    private String fatiguedrivingHours;
+    private Long fatiguedrivingHours;
 
     /** 急转弯次数 */
     @Excel(name = "急转弯次数")
@@ -80,7 +92,7 @@ public class VehicleDrivingData extends BaseEntity
 
     /** 怠速预热时长 */
     @Excel(name = "怠速预热时长")
-    private String idlePreheatingMins;
+    private Long idlePreheatingMins;
 
     /** 超长怠速次数 */
     @Excel(name = "超长怠速次数")
@@ -88,7 +100,7 @@ public class VehicleDrivingData extends BaseEntity
 
     /** 超长怠速时长 */
     @Excel(name = "超长怠速时长")
-    private String overlongIdleMins;
+    private Long overlongIdleMins;
 
     /** 预处理状态(0未处理 1处理中 2处理完成) */
     @Excel(name = "预处理状态(0未处理 1处理中 2处理完成)")
@@ -125,6 +137,33 @@ public class VehicleDrivingData extends BaseEntity
     {
         return dataPath;
     }
+    public void setTotalDistance(Long totalDistance)
+    {
+        this.totalDistance = totalDistance;
+    }
+
+    public Long getTotalDistance()
+    {
+        return totalDistance;
+    }
+    public void setDrivingTime(Long drivingTime)
+    {
+        this.drivingTime = drivingTime;
+    }
+
+    public Long getDrivingTime()
+    {
+        return drivingTime;
+    }
+    public void setMeanSpeed(Long meanSpeed)
+    {
+        this.meanSpeed = meanSpeed;
+    }
+
+    public Long getMeanSpeed()
+    {
+        return meanSpeed;
+    }
     public void setSpeedStd(Long speedStd)
     {
         this.speedStd = speedStd;
@@ -143,12 +182,12 @@ public class VehicleDrivingData extends BaseEntity
     {
         return rapidAccNumbers;
     }
-    public void setRapidAccDuration(String rapidAccDuration)
+    public void setRapidAccDuration(Long rapidAccDuration)
     {
         this.rapidAccDuration = rapidAccDuration;
     }
 
-    public String getRapidAccDuration()
+    public Long getRapidAccDuration()
     {
         return rapidAccDuration;
     }
@@ -161,12 +200,12 @@ public class VehicleDrivingData extends BaseEntity
     {
         return rapidDecNumbers;
     }
-    public void setRapidDecDuration(String rapidDecDuration)
+    public void setRapidDecDuration(Long rapidDecDuration)
     {
         this.rapidDecDuration = rapidDecDuration;
     }
 
-    public String getRapidDecDuration()
+    public Long getRapidDecDuration()
     {
         return rapidDecDuration;
     }
@@ -179,12 +218,12 @@ public class VehicleDrivingData extends BaseEntity
     {
         return slideFrameoutNumbers;
     }
-    public void setSlideFrameoutDuration(String slideFrameoutDuration)
+    public void setSlideFrameoutDuration(Long slideFrameoutDuration)
     {
         this.slideFrameoutDuration = slideFrameoutDuration;
     }
 
-    public String getSlideFrameoutDuration()
+    public Long getSlideFrameoutDuration()
     {
         return slideFrameoutDuration;
     }
@@ -197,12 +236,12 @@ public class VehicleDrivingData extends BaseEntity
     {
         return overspeedNumbers;
     }
-    public void setOverspeedDuration(String overspeedDuration)
+    public void setOverspeedDuration(Long overspeedDuration)
     {
         this.overspeedDuration = overspeedDuration;
     }
 
-    public String getOverspeedDuration()
+    public Long getOverspeedDuration()
     {
         return overspeedDuration;
     }
@@ -215,12 +254,12 @@ public class VehicleDrivingData extends BaseEntity
     {
         return fatiguedrivingNumbers;
     }
-    public void setFatiguedrivingHours(String fatiguedrivingHours)
+    public void setFatiguedrivingHours(Long fatiguedrivingHours)
     {
         this.fatiguedrivingHours = fatiguedrivingHours;
     }
 
-    public String getFatiguedrivingHours()
+    public Long getFatiguedrivingHours()
     {
         return fatiguedrivingHours;
     }
@@ -242,12 +281,12 @@ public class VehicleDrivingData extends BaseEntity
     {
         return idlePreheatingNumbers;
     }
-    public void setIdlePreheatingMins(String idlePreheatingMins)
+    public void setIdlePreheatingMins(Long idlePreheatingMins)
     {
         this.idlePreheatingMins = idlePreheatingMins;
     }
 
-    public String getIdlePreheatingMins()
+    public Long getIdlePreheatingMins()
     {
         return idlePreheatingMins;
     }
@@ -260,12 +299,12 @@ public class VehicleDrivingData extends BaseEntity
     {
         return overlongIdleNumbers;
     }
-    public void setOverlongIdleMins(String overlongIdleMins)
+    public void setOverlongIdleMins(Long overlongIdleMins)
     {
         this.overlongIdleMins = overlongIdleMins;
     }
 
-    public String getOverlongIdleMins()
+    public Long getOverlongIdleMins()
     {
         return overlongIdleMins;
     }
@@ -294,6 +333,9 @@ public class VehicleDrivingData extends BaseEntity
                 .append("vehicleDataId", getVehicleDataId())
                 .append("userId", getUserId())
                 .append("dataPath", getDataPath())
+                .append("totalDistance", getTotalDistance())
+                .append("drivingTime", getDrivingTime())
+                .append("meanSpeed", getMeanSpeed())
                 .append("speedStd", getSpeedStd())
                 .append("rapidAccNumbers", getRapidAccNumbers())
                 .append("rapidAccDuration", getRapidAccDuration())

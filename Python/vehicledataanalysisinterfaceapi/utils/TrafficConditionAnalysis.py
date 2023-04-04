@@ -7,11 +7,6 @@ import datetime
 from vehicledataanalysisinterfaceapi.utils.getWeatherConditions import getWeatherConditionByCoordinateAndDate
 
 
-def trafficAllStatistics(df):
-    return
-
-
-
 
 # 计算一个司机多天内疲劳驾驶的总时长和次数
 def fatigueDriving(df):

@@ -8,7 +8,8 @@ import threading
 from django.apps import apps
 from vehicledataanalysisinterfaceapi.utils.DataPreProcessing import zeroVelocityProcessing2
 from vehicledataanalysisinterfaceapi.utils.DrawMap import drawMap, baseDBSCANMapNoiseReduction, kalman_filter
-from vehicledataanalysisinterfaceapi.utils.DrivingBehaviorScore import DrivingBehaviorScore, Static_Behavior
+from vehicledataanalysisinterfaceapi.utils.DrivingBehaviorScore import DrivingBehaviorScore, Static_Behavior, \
+    total_distance_driving_time_average_speed
 from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreProcessingcallback, \
     datastatisticscallback, drawmapcallback, datascorecallback
 
@@ -20,7 +21,7 @@ javaFrontUrl = apps.get_app_config('vehicledataanalysisinterfaceapi').javawebpat
 csvSavePath = apps.get_app_config('vehicledataanalysisinterfaceapi').filesavepath
 
 # 车辆驾驶数据的字段
-vehicleDrivingDataFields = ['speedStd', 'rapidAccNumbers', 'rapidAccDuration', 'rapidDecNumbers', 'rapidDecDuration',
+vehicleDrivingDataFields = ['totalDistance', 'drivingTime', 'meanSpeed','speedStd', 'rapidAccNumbers', 'rapidAccDuration', 'rapidDecNumbers', 'rapidDecDuration',
                   'slideFrameoutDuration', 'slideFrameoutNumbers', 'overspeedNumbers', 'overspeedDuration',
                   'fatiguedrivingNumbers', 'fatiguedrivingHours', 'suddenturnNumbers', 'idlePreheatingNumbers',
                   'idlePreheatingMins', 'overlongIdleNumbers', 'overlongIdleMins']
@@ -66,7 +67,7 @@ def drawmapapi(request):
     res = json.loads(request.body)
     filepath = javaFrontUrl + res["mapPath"]
     df = pd.read_csv(filepath)
-
+    total_distance_driving_time_average_speed(df)
     # 在新线程中执行耗时操作 处理数据
     def draw_map():
         df2 = baseDBSCANMapNoiseReduction(df)  # DBSCAN降噪
