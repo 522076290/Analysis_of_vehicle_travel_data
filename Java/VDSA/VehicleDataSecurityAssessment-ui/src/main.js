@@ -3,16 +3,27 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 
 import Element from 'element-ui'
+
+// 引入echarts-5.0
+import * as echarts from 'echarts'
+// 将自动注册所有组件为全局组件
+Vue.prototype.$echarts = echarts
+
 import './assets/styles/element-variables.scss'
 
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/ruoyi.scss' // ruoyi css
+import dataV from '@jiaminghi/data-view' // data view
 import App from './App'
 import store from './store'
 import router from './router'
 import directive from './directive' // directive
 import plugins from './plugins' // plugins
 import { download } from '@/utils/request'
+
+//引入chain json
+import geoJson from '@/utils/digitalscreen/china.json'
+echarts.registerMap('china', geoJson);
 
 import './assets/icons' // icon
 import './permission' // permission control
@@ -38,6 +49,7 @@ import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
 
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
@@ -48,6 +60,7 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
@@ -61,6 +74,8 @@ Vue.component('ImagePreview', ImagePreview)
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)
+//使用dataV
+Vue.use(dataV)
 DictData.install()
 
 /**

@@ -6,25 +6,15 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import DBSCAN
 import seaborn as sns
-from sklearn.model_selection import GridSearchCV
 from sklearn.neighbors import DistanceMetric
 from pykalman import KalmanFilter
 import urllib.request
-from sklearn.metrics import silhouette_score, make_scorer
 import time
 import json
 
 from vehicledataanalysisinterfaceapi.utils.response.responsejava import uploaddrawmap
 
-# 设定卡尔曼滤波模型参数
-kf = KalmanFilter(
-    transition_matrices=np.eye(2),
-    observation_matrices=np.eye(2),
-    initial_state_mean=np.zeros(2),
-    initial_state_covariance=np.ones((2, 2)),
-    observation_covariance=np.eye(2),
-    transition_covariance=0.1 * np.eye(2)
-)
+
 
 
 def drawMap(df):
@@ -64,7 +54,7 @@ def baseDBSCANMapNoiseReduction(df):
     resultofclustering = []
     for r in [df2[i:i + m] for i in range(0, len(df2), m)]:  # 列表⽣成式
         distance_matrix = EARTH_RADIUS_KM * METERS * dist.pairwise(r)
-        db = DBSCAN(eps=27, min_samples=3, metric='precomputed').fit_predict(distance_matrix)
+        db = DBSCAN(eps=20, min_samples=3, metric='precomputed').fit_predict(distance_matrix)
         resultofclustering.extend(db)
         pass
     resultofclustering = np.array(resultofclustering)
@@ -87,6 +77,16 @@ def kalman_filter(df, obs_noise):
     # 将经纬度数据转换为二维数组形式
     obs = np.array(df[['lng', 'lat']])
 
+    # 设定卡尔曼滤波模型参数
+    kf = KalmanFilter(
+        transition_matrices=np.eye(2),
+        observation_matrices=np.eye(2),
+        initial_state_mean=np.zeros(2),
+        initial_state_covariance=np.ones((2, 2)),
+        observation_covariance=np.diag([obs_noise, obs_noise]),
+        transition_covariance=0.1 * np.eye(2),
+    )
+
     # 设定卡尔曼滤波模型的参数
     kf.observation_covariance = np.diag([obs_noise, obs_noise])
     kf.initial_state_mean = obs[0]
@@ -98,6 +98,8 @@ def kalman_filter(df, obs_noise):
     df_filtered[['lng', 'lat']] = filtered_state_means
 
     return df_filtered
+
+
 
 
 def correctionOfTrajectoryBaiDu(df):

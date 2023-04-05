@@ -67,7 +67,6 @@ def drawmapapi(request):
     res = json.loads(request.body)
     filepath = javaFrontUrl + res["mapPath"]
     df = pd.read_csv(filepath)
-    total_distance_driving_time_average_speed(df)
     # 在新线程中执行耗时操作 处理数据
     def draw_map():
         df2 = baseDBSCANMapNoiseReduction(df)  # DBSCAN降噪
