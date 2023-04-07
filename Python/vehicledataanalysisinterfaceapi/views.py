@@ -9,7 +9,7 @@ from django.apps import apps
 from vehicledataanalysisinterfaceapi.utils.DataPreProcessing import zeroVelocityProcessing2
 from vehicledataanalysisinterfaceapi.utils.DrawMap import drawMap, baseDBSCANMapNoiseReduction, kalman_filter
 from vehicledataanalysisinterfaceapi.utils.DrivingBehaviorScore import DrivingBehaviorScore, Static_Behavior, \
-    total_distance_driving_time_average_speed
+    total_distance_driving_time_average_speed, DrivingBehaviorScoreTopsis
 from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreProcessingcallback, \
     datastatisticscallback, drawmapcallback, datascorecallback
 
@@ -138,6 +138,7 @@ def drivingbehaviorevaluationapi(request):
     # 在新线程中执行耗时操作 处理数据
     def driving_score():
         drive_score = DrivingBehaviorScore(df, statistics_values)
+        # DrivingBehaviorScoreTopsis(statistics_values)
         # 给对应的字段进行数据填充
         count = 0
         for field in vehicleDrivingBehaviorScoreFileds:

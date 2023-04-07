@@ -355,6 +355,7 @@ def avg_speed(df):
         avg_spd = sum / count
     return avg_spd
 
+
 def total_distance_driving_time_average_speed(df):
     # 将时间戳转换为 Pandas 中的日期时间对象
     df.loc[:, 'location_time'] = pd.to_datetime(df['location_time'])
@@ -374,6 +375,7 @@ def total_distance_driving_time_average_speed(df):
     mean_speed = round(avg_speed(df), 2)
     return [total_distance, driving_time, mean_speed]
 
+
 # 统计危险驾驶行为
 def Static_Behavior(df):
     """
@@ -385,7 +387,7 @@ def Static_Behavior(df):
             fatigueDriving_numbers 疲劳驾驶次数, fatigueDriving_hours 疲劳驾驶时长, suddenTurn_numbers 急转弯次数, idle_preheating_numbers 怠速预热次数,
             idle_preheating_mins 怠速预热时长, overlong_idle_numbers 超长怠速次数, overlong_idle_mins 超长怠速时长
     """
-    weather_dict = genLocation_Date_Weather_Dict() # 获取天气字典
+    weather_dict = genLocation_Date_Weather_Dict()  # 获取天气字典
     speed_std = Speed_Stability(df)  # 车速方差
     acc_dec = acce_decelerate(df)  # 急加速急减速输出列表
     rapid_acc_numbers = acc_dec[0]  # 急加速次数
@@ -408,19 +410,20 @@ def Static_Behavior(df):
     overlong_idle_list = idling(df)  # 超长怠速输出列表
     overlong_idle_numbers = overlong_idle_list[0]  # 超长怠速次数
     overlong_idle_mins = overlong_idle_list[1]  # 超长怠速时长
-    distance_driving_time_average_speed = total_distance_driving_time_average_speed(df) # 统计总驾驶里程和实际驾驶时间和平均速度
+    distance_driving_time_average_speed = total_distance_driving_time_average_speed(df)  # 统计总驾驶里程和实际驾驶时间和平均速度
     total_distance = int(distance_driving_time_average_speed[0])
     driving_time = int(distance_driving_time_average_speed[1])
     mean_speed = int(distance_driving_time_average_speed[2])
 
-    return [total_distance, driving_time, mean_speed, speed_std, rapid_acc_numbers, rapid_acc_duration, rapid_dec_numbers, rapid_dec_duration,
+    return [total_distance, driving_time, mean_speed, speed_std, rapid_acc_numbers, rapid_acc_duration,
+            rapid_dec_numbers, rapid_dec_duration,
             slide_frameOut_duration, slide_frameOut_numbers, overspeed_numbers, overspeed_duration,
             fatigueDriving_numbers, fatigueDriving_hours, suddenTurn_numbers, idle_preheating_numbers,
             idle_preheating_mins, overlong_idle_numbers, overlong_idle_mins]
 
 
-# 驾驶行为评分
-def DrivingBehaviorScore(df,statistics_values):
+# 驾驶行为评分 层次分析模型
+def DrivingBehaviorScore(df, statistics_values):
     """
     驾驶行为评分
     :param df: 传进来的数据
@@ -471,22 +474,22 @@ def DrivingBehaviorScore(df,statistics_values):
     print("节能指标权重列表：\n", weight_EC)
     print("(怠速预热，超速，急加速，急减速，车速稳定性，超长怠速)")
 
-    speed_std = statistics_values[0]  # 车速方差
-    rapid_acc_numbers = statistics_values[1]  # 急加速次数
-    rapid_acc_duration = int(statistics_values[2])  # 急加速时长
-    rapid_dec_numbers = statistics_values[3]  # 急减速次数
-    rapid_dec_duration = int(statistics_values[4])  # 急减速时长
-    slide_frameOut_duration = int(float(statistics_values[5]))  # 熄火滑行时长
-    slide_frameOut_numbers = statistics_values[6]  # 熄火滑行次数
-    overspeed_numbers = statistics_values[7]  # 超速次数
-    overspeed_duration = int(float(statistics_values[8]))  # 超速时长
-    fatigueDriving_numbers = statistics_values[9]  # 疲劳驾驶次数
-    fatigueDriving_hours = int(float(statistics_values[10]))  # 疲劳驾驶时长
-    suddenTurn_numbers = statistics_values[11]  # 急转弯次数
-    idle_preheating_numbers = statistics_values[12]  # 怠速预热次数
-    idle_preheating_mins = int(float(statistics_values[13]))  # 怠速预热时长
-    overlong_idle_numbers = statistics_values[14]  # 超长怠速次数
-    overlong_idle_mins = int(float(statistics_values[15]))  # 超长怠速时长
+    speed_std = statistics_values[3]  # 车速方差
+    rapid_acc_numbers = statistics_values[4]  # 急加速次数
+    rapid_acc_duration = int(statistics_values[5])  # 急加速时长
+    rapid_dec_numbers = statistics_values[6]  # 急减速次数
+    rapid_dec_duration = int(statistics_values[7])  # 急减速时长
+    slide_frameOut_duration = int(float(statistics_values[8]))  # 熄火滑行时长
+    slide_frameOut_numbers = statistics_values[9]  # 熄火滑行次数
+    overspeed_numbers = statistics_values[10]  # 超速次数
+    overspeed_duration = int(float(statistics_values[11]))  # 超速时长
+    fatigueDriving_numbers = statistics_values[12]  # 疲劳驾驶次数
+    fatigueDriving_hours = int(float(statistics_values[13]))  # 疲劳驾驶时长
+    suddenTurn_numbers = statistics_values[14]  # 急转弯次数
+    idle_preheating_numbers = statistics_values[15]  # 怠速预热次数
+    idle_preheating_mins = int(float(statistics_values[16]))  # 怠速预热时长
+    overlong_idle_numbers = statistics_values[17]  # 超长怠速次数
+    overlong_idle_mins = int(float(statistics_values[18]))  # 超长怠速时长
 
     # 计算得分：
     # 车速稳定性得分score_stb：
@@ -501,7 +504,7 @@ def DrivingBehaviorScore(df,statistics_values):
     score_acc_numbers = 100 - 15 * rapid_acc_numbers
     if score_acc_numbers < 0: score_acc_numbers = 0
     # 急加速时长得分：
-    score_acc_duration = 100 - 0.8 * int(rapid_acc_duration)
+    score_acc_duration = 100 - 0.8 * (int(rapid_acc_duration)/60)
     if score_acc_duration < 0: score_acc_duration = 0
     # 急加速总得分:
     score_acc = (score_acc_numbers / 2) + (score_acc_duration / 2)
@@ -509,7 +512,7 @@ def DrivingBehaviorScore(df,statistics_values):
     score_dec_numbers = 100 - 15 * rapid_dec_numbers
     if score_dec_numbers < 0: score_dec_numbers = 0
     # 急减速时长得分：
-    score_dec_duration = 100 - 0.8 * int(rapid_dec_duration)
+    score_dec_duration = 100 - 0.8 * (int(rapid_dec_duration)/60)
     if score_dec_duration < 0: score_dec_duration = 0
     # 急减速总得分:
     score_dec = (score_dec_numbers / 2) + (score_dec_duration / 2)
@@ -518,10 +521,11 @@ def DrivingBehaviorScore(df,statistics_values):
     score_overspeed_numbers = 100 - 15 * overspeed_numbers
     if score_overspeed_numbers < 0: score_overspeed_numbers = 0
     # 超速时长得分：
-    score_overspeed_duration = 100 - overspeed_duration
+    score_overspeed_duration = 100 - (int(overspeed_duration)/60)
     if score_overspeed_duration < 0: score_overspeed_duration = 0
     # 超速总得分:
     score_overspeed = (score_overspeed_duration / 2) + (score_overspeed_numbers / 2)
+    print(str(overspeed_numbers)+"  "+str(overspeed_duration))
 
     # 熄火滑行次数得分：
     score_slide_numbers = 100 - 20 * slide_frameOut_numbers
@@ -530,7 +534,7 @@ def DrivingBehaviorScore(df,statistics_values):
     if slide_frameOut_duration <= 1:
         score_slide_duration = 100
     elif slide_frameOut_duration > 1:
-        score_slide_duration = 100 - 10 * slide_frameOut_duration
+        score_slide_duration = 100 - 10 * (int(slide_frameOut_duration)/60)
         if score_slide_duration < 0: score_slide_duration = 0
     # 熄火滑行总得分：
     score_slide = (score_slide_numbers / 2) + (score_slide_duration / 2)
@@ -554,7 +558,7 @@ def DrivingBehaviorScore(df,statistics_values):
     score_idlePre_numbers = 100 - 15 * idle_preheating_numbers
     if score_idlePre_numbers < 0: score_idlePre_numbers = 0
     # 怠速预热时长得分：
-    score_idlePre_mins = 100 - 2.5 * idle_preheating_mins
+    score_idlePre_mins = 100 - 2.5 * (int(idle_preheating_mins)/60)
     if score_idlePre_mins < 0: score_idlePre_mins = 0
     # 怠速预热总得分：
     score_idlePre = (score_idlePre_numbers / 2) + (score_idlePre_mins / 2)
@@ -563,7 +567,7 @@ def DrivingBehaviorScore(df,statistics_values):
     score_overIdle_numbers = 100 - 10 * overlong_idle_numbers
     if score_overIdle_numbers < 0: score_overIdle_numbers = 0
     # 超长怠速时长得分：
-    score_overIdle_mins = 100 - 0.8 * overlong_idle_mins
+    score_overIdle_mins = 100 - 0.8 * (int(overlong_idle_mins)/60)
     if score_overIdle_mins < 0: score_overIdle_mins = 0
     # 超长怠速总得分：
     score_overIdle = (score_overIdle_numbers / 2) + (score_overIdle_mins / 2)
@@ -572,10 +576,13 @@ def DrivingBehaviorScore(df,statistics_values):
     score = weight[0] * score_overspeed + weight[1] * score_acc + weight[2] * score_dec + weight[3] * score_stb + \
             weight[4] * score_slide + weight[5] * score_fati + weight[6] * score_suddenTurn
     print("安全模型得分：", score)
+
+
     # 计算节能模型总得分：
     score_EC = weight_EC[0] * score_idlePre + weight_EC[1] * score_overspeed + weight_EC[2] * score_acc + \
                weight_EC[3] * score_dec + weight_EC[4] * score_stb + weight_EC[5] * score_overIdle
     print("节能模型得分：", score_EC)
+
     # 计算综合模型得分：
     score_total = (score / 2) + (score_EC / 2)
     print("综合模型得分：", score_total)
@@ -583,3 +590,50 @@ def DrivingBehaviorScore(df,statistics_values):
     mtx_EC = copy.deepcopy(mtx_EC_backup)
 
     return [score, score_EC, score_total]
+
+
+# 驾驶行为评分 topsis模型
+def DrivingBehaviorScoreTopsis(statistics_values):
+    df = pd.DataFrame(
+        {'speed_std': [statistics_values[0]],
+         'rapid_acc_numbers': [statistics_values[1]],
+         'rapid_acc_duration': [statistics_values[2]],
+         'rapid_dec_numbers': [statistics_values[3]],
+         'rapid_dec_duration': [statistics_values[4]],
+         'slide_frameOut_duration': [statistics_values[5]],
+         'slide_frameOut_numbers': [statistics_values[6]],
+         'overspeed_numbers': [statistics_values[7]],
+         'overspeed_duration': [statistics_values[8]],
+         'fatigueDriving_hours': [statistics_values[9]],
+         'suddenTurn_numbers': [statistics_values[10]],
+         'idle_preheating_numbers': [statistics_values[11]],
+         'idle_preheating_mins': [statistics_values[12]],
+         'overlong_idle_numbers': [statistics_values[13]],
+         'fatigueDriving_numbers': [statistics_values[14]],
+         'overlong_idle_mins': [statistics_values[15]],
+         },
+    )
+    df.iloc[:, 0:-1] = df.iloc[:, 0:-1].apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)))  # 归一化
+    # 确定决策矩阵
+    X = df.values
+    # 确定权重向量
+    w = [0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.02, 0.02, 0.01]
+    # 确定正负理想解
+    z = np.max(X, axis=0)  # 正理想解
+    f = np.min(X, axis=0)  # 负理想解
+    # 计算距离
+    S = np.sqrt(np.sum(w * (X - z) ** 2, axis=1)) / np.sqrt(np.sum(w * (X - f) ** 2, axis=1))
+    # 计算综合得分
+    C = 1 - S
+    # 排序输出
+    result = df.copy()
+    result['score'] = C
+    result.sort_values('score', ascending=False, inplace=True)
+
+
+# 极小型转为极大型指标
+def dataDirection_1(datas, offset=0):
+    def normalization(data):
+        return 1 / (data + offset)
+
+    return list(map(normalization, datas))

@@ -185,8 +185,9 @@ def acce_decelerate(df):
     acc_time = list()
     dec_time = list()
     currentState = False  # false表示当前时间正在减速
-    isAccelerate = [0]  # 记录每个时间点是不是加速或减速
-    isDecelerate = [0]  # 第一个时刻不算加减速
+    isAccelerate = [0] * rows  # 记录每个时间点是不是加速或减速
+    isDecelerate = [0] * rows  # 第一个时刻不算加减速
+
 
     sumTime = 0  # 保存一段加速/减速的累计时间
     for i in range(0, rows - 1):
@@ -206,19 +207,19 @@ def acce_decelerate(df):
 
             if a < -3 and not currentState:  # 减速阶段，累加时间到sumTime
                 sumTime += timeInterval
-                isDecelerate.append(1)
-                isAccelerate.append(0)
+                isDecelerate[i + 1] = 1
+                isAccelerate[i + 1] = 0
             elif a < -3 and currentState:  # 从加速进入减速
                 acc_count += 1
                 acc_time.append(sumTime)
                 sumTime = timeInterval
-                isAccelerate.append(0)
-                isDecelerate.append(1)
+                isAccelerate[i + 1] = 0
+                isDecelerate[i + 1] = 1
                 currentState = False
             elif a > 3 and currentState:  # 加速阶段
                 sumTime += timeInterval
-                isAccelerate.append(1)
-                isDecelerate.append(0)
+                isAccelerate[i + 1] = 1
+                isDecelerate[i + 1] = 0
             elif a > 3 and not currentState:  # 从减速进入加速
                 if (sumTime != 0):
                     dec_count += 1
@@ -274,8 +275,8 @@ def SlideOnFrameOut(df):
             endlat = item[5]
             endlng = item[4]
             isSlide = False
-            # 滑行时长大于等于3，并且经纬度有变化
-            if timeInterval >= 3 and (startlng != endlng or startlat != endlat):
+            # 滑行时长大于等于3并且小于3600，并且经纬度有变化
+            if 3 <= timeInterval <= 3600 and (startlng != endlng or startlat != endlat):
                 sumTime += timeInterval
                 slideCount += 1
     return [sumTime, slideCount]

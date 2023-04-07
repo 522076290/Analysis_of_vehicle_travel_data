@@ -54,7 +54,7 @@ def baseDBSCANMapNoiseReduction(df):
     resultofclustering = []
     for r in [df2[i:i + m] for i in range(0, len(df2), m)]:  # 列表⽣成式
         distance_matrix = EARTH_RADIUS_KM * METERS * dist.pairwise(r)
-        db = DBSCAN(eps=20, min_samples=3, metric='precomputed').fit_predict(distance_matrix)
+        db = DBSCAN(eps=27, min_samples=3, metric='precomputed').fit_predict(distance_matrix)
         resultofclustering.extend(db)
         pass
     resultofclustering = np.array(resultofclustering)

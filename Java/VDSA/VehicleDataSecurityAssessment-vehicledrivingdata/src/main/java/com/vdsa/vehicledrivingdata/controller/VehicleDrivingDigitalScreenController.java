@@ -3,10 +3,7 @@ package com.vdsa.vehicledrivingdata.controller;
 import cn.hutool.core.date.DateUtil;
 import com.vdsa.common.core.controller.BaseController;
 import com.vdsa.common.core.page.TableDataInfo;
-import com.vdsa.vehicledrivingdata.domain.VehicleDigitalScreenResp;
-import com.vdsa.vehicledrivingdata.domain.VehicleDrivingBehaviorScore;
-import com.vdsa.vehicledrivingdata.domain.VehicleDrivingData;
-import com.vdsa.vehicledrivingdata.domain.VehicleTravelMap;
+import com.vdsa.vehicledrivingdata.domain.*;
 import com.vdsa.vehicledrivingdata.service.IVehicleDrivingBehaviorScoreService;
 import com.vdsa.vehicledrivingdata.service.IVehicleDrivingDataService;
 import com.vdsa.vehicledrivingdata.service.IVehicleTravelMapService;
@@ -124,6 +121,34 @@ public class VehicleDrivingDigitalScreenController extends BaseController {
         List<VehicleDigitalScreenResp> digitalList =new ArrayList<VehicleDigitalScreenResp>();
         digitalList.add(vehicleDigitalScreenResp);
         return getDataTable(digitalList);
+    }
+
+
+
+    /**
+     * 查询地图统计数据
+     */
+    @GetMapping("/statistical-map-num")
+    public TableDataInfo statisticalMapNum()
+    {
+        startPage();
+        VehicleDrivingData vehicleDrivingData = new VehicleDrivingData();
+        List<VehicleDrivingData> list = vehicleDrivingDataService.selectVehicleDrivingDataList(vehicleDrivingData);
+        List<VehicleDigitalScreenMapNumResp> digitalMapNumList =new ArrayList<VehicleDigitalScreenMapNumResp>();
+
+        // 统计已画图数量 和预计画图数量 默认预计画图数量都是1
+        for (VehicleDrivingData item:list
+        ) {
+            VehicleTravelMap map = new VehicleTravelMap();
+            map.setVehicleDataId(item.getVehicleDataId());
+
+            VehicleDigitalScreenMapNumResp vehicleDigitalScreenMapNumResp = new VehicleDigitalScreenMapNumResp();
+            vehicleDigitalScreenMapNumResp.setId(item.getVehicleDataId());
+            vehicleDigitalScreenMapNumResp.setStatisticsMapNum( vehicleTravelMapService.selectVehicleTravelMapList(map).size());
+            vehicleDigitalScreenMapNumResp.setUncountedNum(1);
+            digitalMapNumList.add(vehicleDigitalScreenMapNumResp);
+        }
+        return getDataTable(digitalMapNumList);
     }
 
 }
