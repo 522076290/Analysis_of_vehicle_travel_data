@@ -314,12 +314,12 @@ def correct_zero_speed(df):
             dist = distance(lat_before, lon_before, lat_after, lon_after)
             diff_angle = angle_diff(angle_before, angle_after)
 
-            # 如果前后两点之间的距离小于等于10米，并且方向角差小于等于10度，则认为车辆处于停车状态，不做处理
-            if dist <= 10 and abs(diff_angle) <= 10:
+            # 如果前后两点之间的距离小于等于3米，并且方向角差小于等于5度，则认为车辆处于停车状态，不做处理
+            if dist <= 3 and abs(diff_angle) <= 5:
                 pass
 
-            # 否则，如果前后两点之间的距离大于10米，并且方向角差大于10度，则认为车辆处于转弯状态，用前一个非零速度作为填充值
-            elif dist > 10 and abs(diff_angle) > 10:
+            # 否则，如果前后两点之间的距离大于3米，并且方向角差大于5度，则认为车辆处于转弯状态，用前一个非零速度作为填充值
+            elif dist > 3 and abs(diff_angle) > 5:
                 fill_value = speed_before
                 df['gps_speed'][i] = fill_value
 
