@@ -534,7 +534,7 @@ def DrivingBehaviorScore(df, statistics_values):
     if slide_frameOut_duration <= 1:
         score_slide_duration = 100
     elif slide_frameOut_duration > 1:
-        score_slide_duration = 100 - 10 * (int(slide_frameOut_duration)/60)
+        score_slide_duration = 100 - 10 * int(slide_frameOut_duration)
         if score_slide_duration < 0: score_slide_duration = 0
     # 熄火滑行总得分：
     score_slide = (score_slide_numbers / 2) + (score_slide_duration / 2)
