@@ -9,7 +9,7 @@ from django.apps import apps
 from vehicledataanalysisinterfaceapi.utils.DataPreProcessing import zeroVelocityProcessing2
 from vehicledataanalysisinterfaceapi.utils.DrawMap import drawMap, baseDBSCANMapNoiseReduction, kalman_filter
 from vehicledataanalysisinterfaceapi.utils.DrivingBehaviorScore import DrivingBehaviorScore, Static_Behavior, \
-    total_distance_driving_time_average_speed, DrivingBehaviorScoreTopsis
+    total_distance_driving_time_average_speed, DrivingBehaviorClassifyByBPNN
 from vehicledataanalysisinterfaceapi.utils.response.responsejava import datapreProcessingcallback, \
     datastatisticscallback, drawmapcallback, datascorecallback
 
@@ -150,6 +150,39 @@ def drivingbehaviorevaluationapi(request):
 
     # 创建并启动新线程
     thread = threading.Thread(target=driving_score)
+    thread.start()
+
+    request_data = {"code": 200, "message": "请求成功", }
+    return JsonResponse(request_data, status=200, charset="utf-8")
+
+
+def drivingbehavioclassifyapi(request):
+    """
+    计算车辆驾驶行为分类标签
+    获取request 传入的csv文件 对车辆数据进行分类 并返回处理结果
+    :param request: post请求
+    :return: 返回Json数据
+    """
+    # 取出数据
+    res = json.loads(request.body)
+    vehicleDrivingBehaviorScoreJson = json.loads(res.get("vehicleDrivingBehaviorScoreJson"))
+    vehicleDrivingDataJson = json.loads(res.get("vehicleDrivingDataJson"))
+
+    statistics_values = []
+    for field in vehicleDrivingDataFields:
+        statistics_values.append(vehicleDrivingDataJson.get(field))
+
+    # 在新线程中执行耗时操作 处理数据
+    def classify():
+        classifytype = DrivingBehaviorClassifyByBPNN(statistics_values)
+        # 添加分类
+        vehicleDrivingBehaviorScoreJson["comprehensiveAssessment"] = str(classifytype)
+        # 修改统计状态
+        vehicleDrivingBehaviorScoreJson["scoringStatus"] = 2
+        datascorecallback(vehicleDrivingBehaviorScoreJson)
+
+    # 创建并启动新线程
+    thread = threading.Thread(target=classify)
     thread.start()
 
     request_data = {"code": 200, "message": "请求成功", }

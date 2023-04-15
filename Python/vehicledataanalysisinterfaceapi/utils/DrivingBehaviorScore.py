@@ -9,6 +9,12 @@ import sys
 import copy
 import math
 
+
+from vehicledataanalysisinterfaceapi.utils.bpnnScorePredict import Net
+
+import torch
+from sklearn import preprocessing
+
 from vehicledataanalysisinterfaceapi.utils.TrafficConditionAnalysis import SlideOnFrameOut, acce_decelerate, overspeed, \
     fatigueDriving, suddenTurn, idle_preheatint, idling
 from vehicledataanalysisinterfaceapi.utils.getWeatherConditions import genLocation_Date_Weather_Dict, \
@@ -592,48 +598,40 @@ def DrivingBehaviorScore(df, statistics_values):
     return [score, score_EC, score_total]
 
 
-# 驾驶行为评分 topsis模型
-def DrivingBehaviorScoreTopsis(statistics_values):
-    df = pd.DataFrame(
-        {'speed_std': [statistics_values[0]],
-         'rapid_acc_numbers': [statistics_values[1]],
-         'rapid_acc_duration': [statistics_values[2]],
-         'rapid_dec_numbers': [statistics_values[3]],
-         'rapid_dec_duration': [statistics_values[4]],
-         'slide_frameOut_duration': [statistics_values[5]],
-         'slide_frameOut_numbers': [statistics_values[6]],
-         'overspeed_numbers': [statistics_values[7]],
-         'overspeed_duration': [statistics_values[8]],
-         'fatigueDriving_hours': [statistics_values[9]],
-         'suddenTurn_numbers': [statistics_values[10]],
-         'idle_preheating_numbers': [statistics_values[11]],
-         'idle_preheating_mins': [statistics_values[12]],
-         'overlong_idle_numbers': [statistics_values[13]],
-         'fatigueDriving_numbers': [statistics_values[14]],
-         'overlong_idle_mins': [statistics_values[15]],
-         },
-    )
-    df.iloc[:, 0:-1] = df.iloc[:, 0:-1].apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)))  # 归一化
-    # 确定决策矩阵
-    X = df.values
-    # 确定权重向量
-    w = [0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.02, 0.02, 0.01]
-    # 确定正负理想解
-    z = np.max(X, axis=0)  # 正理想解
-    f = np.min(X, axis=0)  # 负理想解
-    # 计算距离
-    S = np.sqrt(np.sum(w * (X - z) ** 2, axis=1)) / np.sqrt(np.sum(w * (X - f) ** 2, axis=1))
-    # 计算综合得分
-    C = 1 - S
-    # 排序输出
-    result = df.copy()
-    result['score'] = C
-    result.sort_values('score', ascending=False, inplace=True)
+# 驾驶行为分类使用Bpnn模型
+def DrivingBehaviorClassifyByBPNN(statistics_values):
+    # 创建归一化
+    min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
+    # 去除前三个指标 归一化
+    statistics_values = np.array(statistics_values[3:]).reshape(-1, 1).astype('float32')
+    statistics_values = min_max_scaler.fit_transform(statistics_values)
+    statistics_values = statistics_values.reshape(-1)
+    print(statistics_values)
+
+    # 设置使用cuda
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    # 加载模型
+    model = Net().to(device)
+    model.load_state_dict(torch.load('vehicledataanalysisinterfaceapi/utils/moudle/model.pth'))
+
+    # 设置模型为评估模式
+    model.eval()
+
+    # 选取评估指标
+    x = statistics_values
+
+    # 输入数据进行预测
+    with torch.no_grad():
+        output = model(torch.from_numpy(x).to(device))
+        output = output.cpu().numpy()
+
+    # 将输出转换为 numpy 数组
+    prediction = output
+    # 返回类型
+    prediction = np.round(prediction[2]).astype(int)
+    return prediction
 
 
-# 极小型转为极大型指标
-def dataDirection_1(datas, offset=0):
-    def normalization(data):
-        return 1 / (data + offset)
 
-    return list(map(normalization, datas))
+

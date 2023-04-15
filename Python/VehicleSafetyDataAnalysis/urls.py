@@ -24,4 +24,5 @@ urlpatterns = [
     path('drawMap/', views.drawmapapi),
     path('trafficStatistics/', views.trafficStatisticsapi),
     path('drivingBehaviorScore/', views.drivingbehaviorevaluationapi),
+    path('drivingClassify/', views.drivingbehavioclassifyapi),
 ]
