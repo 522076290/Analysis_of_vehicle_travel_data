@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vdsa.vehicledrivingdata.mapper.VehicleDrivingBehaviorScoreMapper">
-    
+
     <resultMap type="VehicleDrivingBehaviorScore" id="VehicleDrivingBehaviorScoreResult">
         <result property="id"    column="id"    />
         <result property="vehicleDataId"    column="vehicle_data_id"    />
@@ -25,21 +25,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectVehicleDrivingBehaviorScoreList" parameterType="VehicleDrivingBehaviorScore" resultMap="VehicleDrivingBehaviorScoreResult">
         <include refid="selectVehicleDrivingBehaviorScoreVo"/>
-        <where>  
+        <where>
             <if test="vehicleDataId != null "> and vehicle_data_id = #{vehicleDataId}</if>
             <if test="scoringStatus != null "> and scoring_status = #{scoringStatus}</if>
             <if test="securityModelScore != null "> and security_model_score = #{securityModelScore}</if>
             <if test="energySavingModelScore != null "> and energy_saving_model_score = #{energySavingModelScore}</if>
             <if test="compositeModelScore != null "> and composite_model_score = #{compositeModelScore}</if>
-            <if test="comprehensiveAssessment != null  and comprehensiveAssessment != ''"> and comprehensive_assessment = #{comprehensiveAssessment}</if>
+            <if test="comprehensiveAssessment != null "> and comprehensive_assessment = #{comprehensiveAssessment}</if>
         </where>
     </select>
-    
+
     <select id="selectVehicleDrivingBehaviorScoreById" parameterType="Long" resultMap="VehicleDrivingBehaviorScoreResult">
         <include refid="selectVehicleDrivingBehaviorScoreVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertVehicleDrivingBehaviorScore" parameterType="VehicleDrivingBehaviorScore" useGeneratedKeys="true" keyProperty="id">
         insert into vehicle_driving_behavior_score
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="remark != null">remark,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="vehicleDataId != null">#{vehicleDataId},</if>
             <if test="scoringStatus != null">#{scoringStatus},</if>
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateVehicleDrivingBehaviorScore" parameterType="VehicleDrivingBehaviorScore">
@@ -93,7 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteVehicleDrivingBehaviorScoreByIds" parameterType="String">
-        delete from vehicle_driving_behavior_score where id in 
+        delete from vehicle_driving_behavior_score where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -43,6 +43,16 @@ public interface IVehicleDrivingBehaviorScoreService
      */
     public int updateVehicleDrivingBehaviorScore(VehicleDrivingBehaviorScore vehicleDrivingBehaviorScore);
 
+
+    /**
+     * 修改车辆驾驶分类
+     *
+     * @param id 车辆驾驶行为得分id
+     * @return 结果
+     */
+    public int classifVehicleDrivingBehaviorScore(Long id);
+
+
     /**
      * 批量删除车辆驾驶行为得分
      * 

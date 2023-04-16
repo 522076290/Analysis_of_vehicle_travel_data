@@ -88,6 +88,31 @@ public class VehicleDrivingBehaviorScoreServiceImpl implements IVehicleDrivingBe
     }
 
     /**
+     * 对车辆行为分类
+     * @param id 车辆驾驶行为得分id
+     * @return
+     */
+    @Override
+    public int classifVehicleDrivingBehaviorScore(Long id) {
+
+        VehicleDrivingBehaviorScore vehicleDrivingBehaviorScore = vehicleDrivingBehaviorScoreMapper.selectVehicleDrivingBehaviorScoreById(id);
+
+        vehicleDrivingBehaviorScore.setCreateTime(DateUtils.getNowDate());
+        // 修改处理状态 处理中
+        Long mapState = 1L;
+        vehicleDrivingBehaviorScore.setScoringStatus(mapState);
+
+        // 获取VehicleDrivingData的对象
+        VehicleDrivingData vehicleDrivingData = vehicleDrivingDataMapper.selectVehicleDrivingDataByVehicleDataId(vehicleDrivingBehaviorScore.getVehicleDataId());
+
+        // 调用python空闲分类
+        HttpToPython.classifScore(JSONUtil.toJsonStr(vehicleDrivingBehaviorScore),JSONUtil.toJsonStr(vehicleDrivingData));
+
+        vehicleDrivingBehaviorScore.setUpdateTime(DateUtils.getNowDate());
+        return vehicleDrivingBehaviorScoreMapper.updateVehicleDrivingBehaviorScore(vehicleDrivingBehaviorScore);
+    }
+
+    /**
      * 批量删除车辆驾驶行为得分
      * 
      * @param ids 需要删除的车辆驾驶行为得分主键

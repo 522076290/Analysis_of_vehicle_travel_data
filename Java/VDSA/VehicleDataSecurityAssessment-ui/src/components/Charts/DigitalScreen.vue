@@ -136,6 +136,17 @@ export default {
       timing: null,
       //loading图
       loading: true,
+      //查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        vehicleDataId: null,
+        scoringStatus: null,
+        securityModelScore: null,
+        energySavingModelScore: null,
+        compositeModelScore: null,
+        comprehensiveAssessment: null,
+      },
       //时分秒
       dateDay: null,
       //年月日

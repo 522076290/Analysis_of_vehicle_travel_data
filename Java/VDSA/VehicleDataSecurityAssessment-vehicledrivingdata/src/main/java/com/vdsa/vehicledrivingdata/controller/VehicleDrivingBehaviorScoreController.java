@@ -80,6 +80,22 @@ public class VehicleDrivingBehaviorScoreController extends BaseController
         return toAjax(vehicleDrivingBehaviorScoreService.insertVehicleDrivingBehaviorScore(vehicleDrivingBehaviorScore));
     }
 
+
+
+
+    /**
+     * 对车辆进行分类
+     */
+    @PreAuthorize("@ss.hasPermi('vehicledrivingscore:score:edit')")
+    @Log(title = "车辆驾驶行为得分", businessType = BusinessType.UPDATE)
+    @GetMapping("/classify/{id}")
+    public AjaxResult classif(@PathVariable("id") Long id)
+    {
+        return toAjax(vehicleDrivingBehaviorScoreService.classifVehicleDrivingBehaviorScore(id));
+    }
+
+
+
     /**
      * 修改车辆驾驶行为得分
      */

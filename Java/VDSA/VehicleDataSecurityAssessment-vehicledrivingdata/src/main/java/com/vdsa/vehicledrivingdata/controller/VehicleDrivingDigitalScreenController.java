@@ -47,7 +47,6 @@ public class VehicleDrivingDigitalScreenController extends BaseController {
     @GetMapping("/statistical-magnitude")
     public TableDataInfo statisticalMagnitude()
     {
-        startPage();
         VehicleDrivingBehaviorScore vehicleDrivingBehaviorScore = new VehicleDrivingBehaviorScore();
         List<VehicleDrivingBehaviorScore> list = vehicleDrivingBehaviorScoreService.selectVehicleDrivingBehaviorScoreList(vehicleDrivingBehaviorScore);
         VehicleDigitalScreenResp vehicleDigitalScreenResp = new VehicleDigitalScreenResp();
@@ -87,7 +86,6 @@ public class VehicleDrivingDigitalScreenController extends BaseController {
     @GetMapping("/statistical-processing-data")
     public TableDataInfo statisticalProcessingData()
     {
-        startPage();
         VehicleDrivingData vehicleDrivingData = new VehicleDrivingData();
         List<VehicleDrivingData> list = vehicleDrivingDataService.selectVehicleDrivingDataList(vehicleDrivingData);
         VehicleDigitalScreenResp vehicleDigitalScreenResp = new VehicleDigitalScreenResp();
@@ -131,7 +129,6 @@ public class VehicleDrivingDigitalScreenController extends BaseController {
     @GetMapping("/statistical-map-num")
     public TableDataInfo statisticalMapNum()
     {
-        startPage();
         VehicleDrivingData vehicleDrivingData = new VehicleDrivingData();
         List<VehicleDrivingData> list = vehicleDrivingDataService.selectVehicleDrivingDataList(vehicleDrivingData);
         List<VehicleDigitalScreenMapNumResp> digitalMapNumList =new ArrayList<VehicleDigitalScreenMapNumResp>();

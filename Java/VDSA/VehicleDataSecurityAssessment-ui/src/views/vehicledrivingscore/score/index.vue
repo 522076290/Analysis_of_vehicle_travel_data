@@ -44,12 +44,14 @@
         />
       </el-form-item> -->
       <el-form-item label="综合评价" prop="comprehensiveAssessment">
-        <el-input
-          v-model="queryParams.comprehensiveAssessment"
-          placeholder="请输入综合评价"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.comprehensiveAssessment" placeholder="请选择综合评价" clearable>
+          <el-option
+            v-for="dict in dict.type.classify_vehicle_behavior"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -115,17 +117,28 @@
       <el-table-column label="安全模型得分" align="center" prop="securityModelScore" />
       <el-table-column label="节能模型得分" align="center" prop="energySavingModelScore" />
       <el-table-column label="综合模型评分" align="center" prop="compositeModelScore" />
-      <el-table-column label="综合评价" align="center" prop="comprehensiveAssessment" />
+      <el-table-column label="综合评价" align="center" prop="comprehensiveAssessment">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.classify_vehicle_behavior" :value="scope.row.comprehensiveAssessment"/>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['vehicledrivingscore:score:edit']"
-          >修改</el-button>
+          >修改</el-button> -->
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleClassify(scope.row)"
+            v-hasPermi="['vehicledrivingscore:score:edit']"
+          >分类</el-button>
           <el-button
             size="mini"
             type="text"
@@ -186,11 +199,11 @@
 </template>
 
 <script>
-import { listScore, getScore, delScore, addScore, updateScore } from "@/api/vehicledrivingscore/score";
+import { listScore, getScore, delScore, addScore, updateScore ,classifyScore} from "@/api/vehicledrivingscore/score";
 
 export default {
   name: "Score",
-  dicts: ['data_process_state'],
+  dicts: ['classify_vehicle_behavior', 'data_process_state'],
   data() {
     return {
       // 遮罩层
@@ -299,6 +312,18 @@ export default {
         this.open = true;
         this.title = "修改车辆驾驶行为得分";
       });
+    },
+    /** 分类按钮操作 */
+    handleClassify(row) {
+      this.reset();
+      const id = row.id || this.ids
+      self = this
+      this.$modal.confirm('是否确认提交的分类？这个过程可能会花费一些时间 请耐心等待').then(function() {
+        classifyScore(id).then(response => {
+          self.$modal.msgSuccess("修改成功");
+          self.getList();
+        });
+      })
     },
     /** 提交按钮 */
     submitForm() {

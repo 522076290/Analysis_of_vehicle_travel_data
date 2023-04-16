@@ -73,4 +73,21 @@ public class HttpToPython {
                 .execute().body();
     }
 
+
+    /**
+     * 车辆行为分类
+     * @param vehicleDrivingBehaviorScoreJson 车辆得分对象json
+     * @param vehicleDrivingDataJson 车辆数据对象json
+     */
+    public static void classifScore(String vehicleDrivingBehaviorScoreJson,String vehicleDrivingDataJson){
+        String url = pythonApiPath+"drivingClassify/";
+        JSONObject requestData = new JSONObject();
+        requestData.put("vehicleDrivingBehaviorScoreJson", vehicleDrivingBehaviorScoreJson);
+        requestData.put("vehicleDrivingDataJson", vehicleDrivingDataJson);
+        String requestBody = JSONUtil.parseObj(requestData, false).toString();
+        String result2 = HttpRequest.post(url)
+                .body(requestBody)
+                .execute().body();
+    }
+
 }

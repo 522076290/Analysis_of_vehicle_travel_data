@@ -35,6 +35,16 @@ export function updateScore(data) {
   })
 }
 
+
+// 车辆数据分类
+export function classifyScore(id) {
+  return request({
+    url: '/vehicledrivingscore/score/classify/'+ id,
+    method: 'get',
+  })
+}
+
+
 // 删除车辆驾驶行为得分
 export function delScore(id) {
   return request({

@@ -7,9 +7,9 @@ import com.vdsa.common.core.domain.BaseEntity;
 
 /**
  * 车辆驾驶行为得分对象 vehicle_driving_behavior_score
- * 
+ *
  * @author ruoyi
- * @date 2023-04-03
+ * @date 2023-04-15
  */
 public class VehicleDrivingBehaviorScore extends BaseEntity
 {
@@ -22,8 +22,8 @@ public class VehicleDrivingBehaviorScore extends BaseEntity
     @Excel(name = "对应驾驶数据id")
     private Long vehicleDataId;
 
-    /** 评价生成状态 */
-    @Excel(name = "评价生成状态")
+    /** 评价生成状态(0未处理 1处理中 2处理完成) */
+    @Excel(name = "评价生成状态(0未处理 1处理中 2处理完成)")
     private Long scoringStatus;
 
     /** 安全模型得分 */
@@ -40,68 +40,68 @@ public class VehicleDrivingBehaviorScore extends BaseEntity
 
     /** 综合评价 */
     @Excel(name = "综合评价")
-    private String comprehensiveAssessment;
+    private Long comprehensiveAssessment;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setVehicleDataId(Long vehicleDataId) 
+    public void setVehicleDataId(Long vehicleDataId)
     {
         this.vehicleDataId = vehicleDataId;
     }
 
-    public Long getVehicleDataId() 
+    public Long getVehicleDataId()
     {
         return vehicleDataId;
     }
-    public void setScoringStatus(Long scoringStatus) 
+    public void setScoringStatus(Long scoringStatus)
     {
         this.scoringStatus = scoringStatus;
     }
 
-    public Long getScoringStatus() 
+    public Long getScoringStatus()
     {
         return scoringStatus;
     }
-    public void setSecurityModelScore(Long securityModelScore) 
+    public void setSecurityModelScore(Long securityModelScore)
     {
         this.securityModelScore = securityModelScore;
     }
 
-    public Long getSecurityModelScore() 
+    public Long getSecurityModelScore()
     {
         return securityModelScore;
     }
-    public void setEnergySavingModelScore(Long energySavingModelScore) 
+    public void setEnergySavingModelScore(Long energySavingModelScore)
     {
         this.energySavingModelScore = energySavingModelScore;
     }
 
-    public Long getEnergySavingModelScore() 
+    public Long getEnergySavingModelScore()
     {
         return energySavingModelScore;
     }
-    public void setCompositeModelScore(Long compositeModelScore) 
+    public void setCompositeModelScore(Long compositeModelScore)
     {
         this.compositeModelScore = compositeModelScore;
     }
 
-    public Long getCompositeModelScore() 
+    public Long getCompositeModelScore()
     {
         return compositeModelScore;
     }
-    public void setComprehensiveAssessment(String comprehensiveAssessment) 
+    public void setComprehensiveAssessment(Long comprehensiveAssessment)
     {
         this.comprehensiveAssessment = comprehensiveAssessment;
     }
 
-    public String getComprehensiveAssessment() 
+    public Long getComprehensiveAssessment()
     {
         return comprehensiveAssessment;
     }
@@ -109,18 +109,18 @@ public class VehicleDrivingBehaviorScore extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("vehicleDataId", getVehicleDataId())
-            .append("scoringStatus", getScoringStatus())
-            .append("securityModelScore", getSecurityModelScore())
-            .append("energySavingModelScore", getEnergySavingModelScore())
-            .append("compositeModelScore", getCompositeModelScore())
-            .append("comprehensiveAssessment", getComprehensiveAssessment())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
+                .append("id", getId())
+                .append("vehicleDataId", getVehicleDataId())
+                .append("scoringStatus", getScoringStatus())
+                .append("securityModelScore", getSecurityModelScore())
+                .append("energySavingModelScore", getEnergySavingModelScore())
+                .append("compositeModelScore", getCompositeModelScore())
+                .append("comprehensiveAssessment", getComprehensiveAssessment())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .append("remark", getRemark())
+                .toString();
     }
 }

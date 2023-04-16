@@ -16,6 +16,7 @@ public class VehicleDrivingData extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 车辆行驶数据编号 */
+    @Excel(name = "排序id")
     private Long vehicleDataId;
 
     /** 对应用户id */
