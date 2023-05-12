@@ -83,16 +83,7 @@ def bpnnPredict():
         if epoch % 1000 == 0:
             print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch + 1, 10000, loss.item()))
 
-    # 测试模型
-    # with torch.no_grad():
-    #     inputs = torch.from_numpy(x_test).to(device)
-    #     targets = torch.from_numpy(y_test).to(device)
-    #     outputs = model(inputs)
-    #     test_loss = criterion(outputs, targets)
-    #     mse_loss = nn.MSELoss()(outputs, targets)
-    #     mae_loss = nn.L1Loss()(outputs, targets)
-    #     print('Test Loss: {:.4f}, MSE Loss: {:.4f}, MAE Loss: {:.4f}'.format(test_loss.item(), mse_loss.item(),
-    #                                                                          mae_loss.item()))
+
 
     with torch.no_grad():
         inputs = torch.from_numpy(x_test).to(device)
@@ -109,43 +100,3 @@ def bpnnPredict():
     # 保存模型
     torch.save(model.state_dict(), 'moudle/model.pth')
 
-    # 将特征转换成张量并放到设备上
-    # features = torch.tensor(
-    #     [0.869565, 1.000000, 0.433333, 0.397163, 0.334677, 1.000000, 1.000000, 0.000000, 0.000000, 0.500000, 0.046829,
-    #      0.403061, 1.000000, 0.361461, 1.000000, 0.077038], dtype=torch.float32).to(
-    #     device)
-    # with torch.no_grad():
-    #     output = model(features)
-    #     output_first_element = output.index_select(0, torch.tensor([0]).to(device))
-    #     output_second_element = output.index_select(0, torch.tensor([1]).to(device))
-    # print(output_first_element.item())
-    # print(output_second_element.item())
-    #
-    # # 将归一化后的数据还原回原始数据
-    # df1_inverse = min_max_scaler.inverse_transform([[0.869565, 1.000000, 0.433333, 0.397163, 0.334677, 1.000000, 1.000000, 0.000000, 0.000000, 0.500000, 0.046829,
-    #      0.403061, 1.000000, 0.361461, 1.000000, 0.077038,output_first_element.item(), output_second_element.item()]])
-    #
-    # print(df1_inverse.astype(int))
-
-    # # 加载模型
-    # model = Net().to(device)
-    # model.load_state_dict(torch.load('model.pth'))
-    #
-    # # 设置模型为评估模式
-    # model.eval()
-    #
-    # # 输入数据进行预测
-    # with torch.no_grad():
-    #     output = model(torch.from_numpy(np.array(x)).to(device))
-    #     output = output.cpu().numpy()
-    #
-    # # 将输出转换为 numpy 数组
-    # prediction = output
-    #
-    # # 拼接数据
-    # x_with_prediction = np.concatenate((x, prediction), axis=1)
-    #
-    # # 将归一化后的数据还原回原始数据
-    # np.set_printoptions(threshold=np.inf)
-    # x_with_prediction_rounded = np.round(min_max_scaler.inverse_transform(x_with_prediction)).astype(int)
-    # print(x_with_prediction_rounded)

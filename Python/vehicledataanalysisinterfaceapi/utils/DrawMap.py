@@ -25,7 +25,7 @@ def drawMap(df):
     savemappath = apps.get_app_config('vehicledataanalysisinterfaceapi').mapsavepath + '\\map.html'
     m1 = folium.Map(location=[df['lat'].mean(), df['lng'].mean()], zoom_start=11)
     mydata1 = df.loc[:, ["lat", "lng"]].values.tolist()
-    folium.PolyLine(mydata1, color='red').add_to(m1)
+    folium.PolyLine(mydata1, color='blue', weight=2).add_to(m1)
     m1.save(savemappath)
     # 上传回给java管理后台
     savemappath = uploaddrawmap(savemappath)
